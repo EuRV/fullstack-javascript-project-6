@@ -1,0 +1,29 @@
+{
+  "name": "@hexlet/code",
+  "version": "1.0.0",
+  "type": "module",
+  "description": "[![Actions Status](https://github.com/EuRV/fullstack-javascript-project-6/workflows/hexlet-check/badge.svg)](https://github.com/EuRV/fullstack-javascript-project-6/actions)",
+  "engines": {
+    "node": ">=16.x"
+  },
+  "main": "server/plugin.js",
+  "scripts": {
+    "start": "fastify start server/plugin.js -l debug -P -o"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/EuRV/fullstack-javascript-project-6.git"
+  },
+  "author": "EuRV",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/EuRV/fullstack-javascript-project-6/issues"
+  },
+  "homepage": "https://github.com/EuRV/fullstack-javascript-project-6#readme",
+  "dependencies": {
+    "@fastify/env": "^4.2.0",
+    "fastify": "^4.20.0",
+    "fastify-cli": "^5.7.1",
+    "i18next": "^23.2.11"
+  }
+}
