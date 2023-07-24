@@ -8,6 +8,7 @@
   },
   "main": "server/plugin.js",
   "scripts": {
+    "build": "webpack",
     "start": "fastify start server/plugin.js -l debug -P -o"
   },
   "repository": {
@@ -22,8 +23,19 @@
   "homepage": "https://github.com/EuRV/fullstack-javascript-project-6#readme",
   "dependencies": {
     "@fastify/env": "^4.2.0",
+    "@fastify/static": "^6.10.2",
+    "@fastify/view": "^8.0.0",
+    "bootstrap": "^5.3.0",
     "fastify": "^4.20.0",
     "fastify-cli": "^5.7.1",
-    "i18next": "^23.2.11"
+    "i18next": "^23.2.11",
+    "mini-css-extract-plugin": "^2.7.6",
+    "pug": "^3.0.2",
+    "webpack": "^5.88.2"
+  },
+  "devDependencies": {
+    "css-loader": "^6.8.1",
+    "style-loader": "^3.3.3",
+    "webpack-cli": "^5.1.4"
   }
 }
