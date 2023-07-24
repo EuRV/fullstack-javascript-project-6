@@ -4,7 +4,9 @@ import path from 'path';
 import fastifyStatic from '@fastify/static';
 import fastifyView from '@fastify/view';
 import Pug from 'pug';
+import i18next from 'i18next';
 
+import ru from './locales/ru.js';
 import addRoutes from './routes/index.js';
 
 const __dirname = fileURLToPath(path.dirname(import.meta.url));
@@ -16,6 +18,7 @@ const setUpViews = (app) => {
     },
     includeViewExtension: true,
     defaultContext: {
+      t: (key) => i18next.t(key),
       assetPath: (filename) => `/assets/${filename}`,
     },
     templates: path.join(__dirname, '..', 'server', 'views'),
@@ -30,12 +33,23 @@ const setUpStaticAssets = (app) => {
   });
 };
 
+const setupLocalization = async () => {
+  await i18next
+    .init({
+      lng: 'ru',
+      resources: {
+        ru,
+      },
+    });
+};
+
 export const opts = {
   dotenv: true,
   data: process.env
 }
 
 export default async (fastify, opts) => {
+  await setupLocalization();
   setUpViews(fastify);
   setUpStaticAssets(fastify);
   addRoutes(fastify);
