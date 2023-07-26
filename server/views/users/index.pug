@@ -1,0 +1,21 @@
+extends ../layouts/application.pug
+
+block header
+  = t('views.users.name')
+
+block content
+  .table-responsive
+    table.table.table-borderless.table-striped.mt-5.bg-white
+      thead
+        tr
+          th= t('views.users.id')
+          th= t('views.users.userName')
+          th= t('views.users.email')
+          th= t('views.users.createdAt')
+          th= t('views.users.actions')
+    //- tbody
+    //-   each user in users
+    //-     tr
+    //-       td= user.id
+    //-       td= user.email
+    //-       td= formatDate(user.createdAt)
