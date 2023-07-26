@@ -35,9 +35,12 @@ export default {
         },
       },
       users: {
+        name: 'Пользователи',
         id: 'ID',
+        userName: 'Полное имя',
         email: 'Email',
         createdAt: 'Дата создания',
+        actions: 'Действия',
         new: {
           submit: 'Сохранить',
           signUp: 'Регистрация',
