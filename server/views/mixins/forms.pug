@@ -1,0 +1,7 @@
+- const getInputName = (property) => `data[${property}]`
+- const getInputId = (property) => `data_${property}`
+
+mixin buttonTo(action, method)
+  form(action=action, method="post")
+    input(name="_method" type="hidden" value=method)
+    input(type='submit')&attributes(attributes)
