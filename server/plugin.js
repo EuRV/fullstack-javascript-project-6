@@ -20,6 +20,10 @@ const setUpViews = (app) => {
     defaultContext: {
       t: (key) => i18next.t(key),
       assetPath: (filename) => `/assets/${filename}`,
+      formatDate: (str) => {
+        const date = new Date(str);
+        return date.toLocaleString();
+      },
     },
     templates: path.join(__dirname, '..', 'server', 'views'),
   });
