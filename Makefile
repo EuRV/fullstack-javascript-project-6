@@ -3,3 +3,6 @@ db-migrate:
 
 db-rollback:
 	npx knex migrate:rollback
+
+lint:
+	npx eslint .
