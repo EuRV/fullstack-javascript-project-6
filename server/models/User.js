@@ -2,8 +2,9 @@
 
 // import * as objectionUnique from 'objection-unique';
 // import BaseModel from './BaseModel';
-import encrypt from '../lib/secure.js';
 import objection from 'objection';
+import encrypt from '../lib/secure.js';
+
 const { Model } = objection;
 
 // const unique = objectionUnique({ fields: ['email'] });

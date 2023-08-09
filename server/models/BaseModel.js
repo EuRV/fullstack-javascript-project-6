@@ -1,6 +1,7 @@
 // @ts-check
 
 import objection from 'objection';
+
 const { Model } = objection;
 
 export default class BaseModel extends Model {

@@ -1,3 +1,4 @@
+/* eslint-disable linebreak-style */
 // @ts-check
 
 import path from 'path';
@@ -15,22 +16,21 @@ export const development = {
     host: 'localhost',
     port: process.env.DB_PORT || 5432,
     database: 'testdb',
-    user:     'eurv',
-    password: 'pgpwd'
+    user: 'eurv',
+    password: 'pgpwd',
   },
   pool: {
     min: 2,
-    max: 10
+    max: 10,
   },
   useNullAsDefault: true,
   migrations,
 };
 
-export const production = {
+export const test = {
   client: 'sqlite3',
-  connection: {
-    filename: path.resolve(__dirname, 'database.sqlite'),
-  },
+  connection: ':memory:',
   useNullAsDefault: true,
+  // debug: true,
   migrations,
 };

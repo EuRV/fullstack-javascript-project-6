@@ -104,10 +104,11 @@ const registerPlugins = async (app) => {
 
 export const opts = {
   dotenv: true,
-  data: process.env
-}
+  data: process.env,
+};
 
-export default async (fastify, opts) => {
+// eslint-disable-next-line no-unused-vars
+export default async (fastify, _opts) => {
   await registerPlugins(fastify);
   await setupLocalization();
   setUpViews(fastify);

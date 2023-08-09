@@ -1,5 +1,6 @@
 export default (app) => {
   app
+    // eslint-disable-next-line consistent-return
     .get('/users', { name: 'users' }, async (req, reply) => {
       try {
         const users = await app.objection.models.user.query();
@@ -25,6 +26,7 @@ export default (app) => {
       reply.render('users/edit', { user });
       return reply;
     })
+    // eslint-disable-next-line consistent-return
     .post('/users', async (req, reply) => {
       const user = new app.objection.models.user();
       user.$set(req.body.data);
@@ -34,7 +36,7 @@ export default (app) => {
         await app.objection.models.user.query().insert(validUser);
         reply.redirect('/');
         return reply;
-      } catch({ data }) {
+      } catch ({ data }) {
         console.error(data);
       }
     })
@@ -63,7 +65,7 @@ export default (app) => {
         await app.objection.models.user.query().deleteById(userId);
         req.logOut();
         return reply.redirect('/users');
-      } catch(err) {
+      } catch (err) {
         console.error(err);
         return reply.redirect('/users');
       }
