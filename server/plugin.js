@@ -1,4 +1,5 @@
-// EARLYBIRDSSQL10
+// @ts-check
+
 import { fileURLToPath } from 'url';
 import path from 'path';
 import fastifyStatic from '@fastify/static';
@@ -6,7 +7,9 @@ import fastifyView from '@fastify/view';
 import fastifyFormbody from '@fastify/formbody';
 import fastifySecureSession from '@fastify/secure-session';
 import fastifyPassport from '@fastify/passport';
+import fastifySensible from '@fastify/sensible';
 // import { plugin as fastifyReverseRoutes } from 'fastify-reverse-routes';
+// @ts-ignore
 import fastifyMethodOverride from 'fastify-method-override';
 import fastifyObjectionjs from 'fastify-objectionjs';
 import qs from 'qs';
@@ -14,14 +17,16 @@ import Pug from 'pug';
 import i18next from 'i18next';
 
 import ru from './locales/ru.js';
+// @ts-ignore
 import addRoutes from './routes/index.js';
 import getHelpers from './helpers/index.js';
 import * as knexConfig from '../knexfile.js';
 import models from './models/index.js';
 import FormStrategy from './lib/passportStrategies/FormStrategy.js';
 
-const mode = process.env.NODE_ENV || 'development';
 const __dirname = fileURLToPath(path.dirname(import.meta.url));
+
+const mode = process.env.NODE_ENV || 'development';
 
 const setUpViews = (app) => {
   const helpers = getHelpers(app);
@@ -69,6 +74,7 @@ const addHooks = (app) => {
 };
 
 const registerPlugins = async (app) => {
+  await app.register(fastifySensible);
   // await app.register(fastifyReverseRoutes);
   await app.register(fastifyFormbody, { parser: qs.parse });
   await app.register(fastifySecureSession, {
@@ -78,6 +84,7 @@ const registerPlugins = async (app) => {
     },
   });
 
+  // @ts-ignore
   fastifyPassport.registerUserDeserializer(
     (user) => app.objection.models.user.query().findById(user.id),
   );
@@ -86,6 +93,7 @@ const registerPlugins = async (app) => {
   await app.register(fastifyPassport.initialize());
   await app.register(fastifyPassport.secureSession());
   await app.decorate('fp', fastifyPassport);
+  // @ts-ignore
   app.decorate('authenticate', (...args) => fastifyPassport.authenticate(
     'form',
     {
@@ -105,6 +113,7 @@ const registerPlugins = async (app) => {
 export const opts = {
   dotenv: true,
   data: process.env,
+  exposeHeadRoutes: false,
 };
 
 // eslint-disable-next-line no-unused-vars
