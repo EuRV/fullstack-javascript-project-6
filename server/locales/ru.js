@@ -33,6 +33,7 @@ export default {
         signIn: 'Вход',
         signUp: 'Регистрация',
         signOut: 'Выход',
+        statuses: 'Статусы',
       },
     },
     views: {
@@ -41,6 +42,15 @@ export default {
           signIn: 'Вход',
           submit: 'Войти',
         },
+      },
+      statuses: {
+        name: 'Статусы',
+        createButton: 'Создать статус',
+        id: 'ID',
+        labelName: 'Наименование',
+        createdAt: 'Дата создания',
+        edit: 'Изменить',
+        delete: 'Удалить',
       },
       users: {
         name: 'Пользователи',
