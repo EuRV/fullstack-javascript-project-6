@@ -1,3 +1,5 @@
+import i18next from 'i18next';
+
 export default (app) => {
   app
     // eslint-disable-next-line consistent-return
@@ -26,7 +28,6 @@ export default (app) => {
       reply.render('users/edit', { user });
       return reply;
     })
-    // eslint-disable-next-line consistent-return
     .post('/users', async (req, reply) => {
       const user = new app.objection.models.user();
       user.$set(req.body.data);
@@ -34,11 +35,14 @@ export default (app) => {
       try {
         const validUser = await app.objection.models.user.fromJson(req.body.data);
         await app.objection.models.user.query().insert(validUser);
+        req.flash('info', i18next.t('flash.users.create.success'));
         reply.redirect('/');
-        return reply;
       } catch ({ data }) {
-        console.error(data);
+        req.flash('error', i18next.t('flash.users.create.error'));
+        reply.render('users/new', { user, errors: data });
       }
+
+      return reply;
     })
     .patch('/users/:id', async (req, reply) => {
       const userId = Number(req.params.id);
@@ -47,11 +51,14 @@ export default (app) => {
       try {
         const validUser = await app.objection.models.user.fromJson(req.body.data);
         await user.$query().update(validUser);
-        return reply.redirect('/users');
+        req.flash('info', i18next.t('flash.users.update.success'));
+        reply.redirect('/users');
       } catch ({ data }) {
-        // console.warn(data);
-        return reply.render('users/edit', { user });
+        req.flash('error', i18next.t('flash.users.update.error'));
+        reply.render('users/edit', { user, errors: data });
       }
+
+      return reply;
     })
     .delete('/users/:id', { name: 'deleteUser', preValidation: app.authenticate }, async (req, reply) => {
       const userId = Number(req.params.id);
@@ -64,10 +71,13 @@ export default (app) => {
       try {
         await app.objection.models.user.query().deleteById(userId);
         req.logOut();
-        return reply.redirect('/users');
+        req.flash('info', i18next.t('flash.users.delete.success'));
       } catch (err) {
-        console.error(err);
-        return reply.redirect('/users');
+        req.flash('error', i18next.t('flash.users.delete.error'));
+        reply.code(422);
       }
+
+      reply.redirect('/users');
+      return reply;
     });
 };

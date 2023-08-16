@@ -21,13 +21,13 @@ export default (app) => {
         return reply;
       }
       await req.logIn(user);
-      // req.flash('success', i18next.t('flash.session.create.success'));
+      req.flash('success', i18next.t('flash.session.create.success'));
       reply.redirect('/');
       return reply;
     }))
     .delete('/session', (req, reply) => {
       req.logOut();
-      // req.flash('info', i18next.t('flash.session.delete.success'));
+      req.flash('info', i18next.t('flash.session.delete.success'));
       reply.redirect('/');
     });
 };
