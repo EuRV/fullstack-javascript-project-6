@@ -4,6 +4,7 @@ block header
   = t('views.statuses.name')
 
 block content
+  a(class="btn btn-primary mb-3" href='/statuses/new' role="button")=t('views.statuses.createNew')
   .table-responsive
     table.table.table-borderless.table-striped.mt-5.bg-white
       thead
