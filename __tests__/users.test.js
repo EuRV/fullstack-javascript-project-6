@@ -28,7 +28,7 @@ describe('test users CRUD', () => {
 
   beforeEach(async () => {
     await knex.migrate.latest();
-    await prepareData(app);
+    await prepareData(app, 'users');
     testData = getTestData();
     cookie = await signIn(app, testData.users.existing);
   });
@@ -114,7 +114,6 @@ describe('test users CRUD', () => {
   });
 
   afterEach(async () => {
-    // await knex.migrate.rollback();
     await knex('users').truncate();
   });
 

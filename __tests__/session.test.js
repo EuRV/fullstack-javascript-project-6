@@ -15,7 +15,7 @@ describe('test session', () => {
     await init(app);
     knex = app.objection.knex;
     await knex.migrate.latest();
-    await prepareData(app);
+    await prepareData(app, 'users');
     testData = getTestData();
   });
 
