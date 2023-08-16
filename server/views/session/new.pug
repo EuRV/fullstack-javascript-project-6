@@ -9,6 +9,6 @@ block content
       .card.shadow-sm
         .card-body.row.p-5
           +formFor()(action='/session' method='post')
-            +input(signInForm, 'email', errors)(type="text")
-            +input(signInForm, 'password')(type="password")
+            +input(signInForm, 'email', errors, t('views.session.new.email'))(type="text" placeholder=t('views.session.new.email'))
+            +input(signInForm, 'password', errors, t('views.session.new.password'))(type="password" placeholder=t('views.session.new.password'))
             +submit(signInForm)(value=t('views.session.new.submit'))
