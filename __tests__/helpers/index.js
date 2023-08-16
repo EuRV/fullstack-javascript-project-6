@@ -10,9 +10,9 @@ const getFixtureData = (filename) => JSON.parse(readFixture(filename));
 
 export const getTestData = () => getFixtureData('testData.json');
 
-export const prepareData = async (app) => {
+export const prepareData = async (app, tableName) => {
   const { knex } = app.objection;
-  await knex('users').insert(getFixtureData('users.json'));
+  await knex(tableName).insert(getFixtureData(`${tableName}.json`));
 };
 
 export const signIn = async (app, data) => {
