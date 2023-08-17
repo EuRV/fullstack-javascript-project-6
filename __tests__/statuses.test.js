@@ -67,6 +67,19 @@ describe('test task stauses CRUD', () => {
     expect(status).toMatchObject(params);
   });
 
+  it('delete', async () => {
+    const params = testData.statuses.existing;
+    const response = await app.inject({
+      method: 'DELETE',
+      url: '/statuses/1',
+      cookies: cookie,
+    });
+
+    expect(response.statusCode).toBe(302);
+    const status = await models.status.query().findOne({ name: params.name });
+    expect(status).toBeUndefined();
+  });
+
   afterEach(async () => {
     await knex('task_statuses').truncate();
     await knex('users').truncate();

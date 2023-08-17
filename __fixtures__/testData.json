@@ -21,6 +21,9 @@
   "statuses": {
     "new": {
       "name": "todo"
+    },
+    "existing": {
+      "name": "in process"
     }
   }
 }
