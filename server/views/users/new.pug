@@ -9,8 +9,8 @@ block content
       .card.shadow-sm
         .card-body.row.p-5
           +formFor()(action='/users' method='post')
-            +input(user, 'firstName', errors, t('views.users.new.firstName'))(type="text" placeholder=t('views.users.new.firstName'))
-            +input(user, 'lastName', errors, t('views.users.new.lastName'))(type="text" placeholder=t('views.users.new.lastName'))
-            +input(user, 'email', errors, t('views.users.new.email'))(type="text" placeholder=t('views.users.new.email'))
-            +input(user, 'password', errors, t('views.users.new.password'))(type="password" placeholder=t('views.users.new.password'))
+            +input(user, 'firstName', errors)(type="text" placeholder=t('views.users.new.firstName'))
+            +input(user, 'lastName', errors)(type="text" placeholder=t('views.users.new.lastName'))
+            +input(user, 'email', errors)(type="text" placeholder=t('views.users.new.email'))
+            +input(user, 'password', errors)(type="password" placeholder=t('views.users.new.password'))
             +submit(user)(value=t('views.users.new.submit'))
