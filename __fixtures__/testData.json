@@ -24,6 +24,9 @@
     },
     "existing": {
       "name": "in process"
+    },
+    "update": {
+      "name": "on testing"
     }
   }
 }

@@ -67,6 +67,32 @@ describe('test task stauses CRUD', () => {
     expect(status).toMatchObject(params);
   });
 
+  it('edit', async () => {
+    const response = await app.inject({
+      method: 'GET',
+      url: '/statuses/1/edit',
+      cookies: cookie,
+    });
+
+    expect(response.statusCode).toBe(200);
+  });
+
+  it('update', async () => {
+    const params = testData.statuses.update;
+    const response = await app.inject({
+      method: 'PATCH',
+      url: '/statuses/1',
+      cookies: cookie,
+      payload: {
+        data: params,
+      },
+    });
+
+    expect(response.statusCode).toBe(302);
+    const status = await models.status.query().findOne({ name: params.name });
+    expect(status).toMatchObject(params);
+  });
+
   it('delete', async () => {
     const params = testData.statuses.existing;
     const response = await app.inject({
