@@ -11,10 +11,16 @@
       "password": "O6AvLIQL1cbzrre"
     },
     "update": {
-      "firstName": "Lawrence",
-      "lastName": "Kulas",
-      "email": "lawrence.kulas87@gmail.com",
+      "firstName": "Sansa",
+      "lastName": "Stark",
+      "email": "sansa.stark.87@gmail.com",
       "password": "O6AvLIQL1cbzrre"
+    }
+  },
+
+  "statuses": {
+    "new": {
+      "name": "todo"
     }
   }
 }
