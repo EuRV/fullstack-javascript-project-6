@@ -51,6 +51,22 @@ describe('test task stauses CRUD', () => {
     expect(response.statusCode).toBe(200);
   });
 
+  it('create', async () => {
+    const params = testData.statuses.new;
+    const response = await app.inject({
+      method: 'POST',
+      url: '/statuses',
+      cookies: cookie,
+      payload: {
+        data: params,
+      },
+    });
+
+    expect(response.statusCode).toBe(302);
+    const status = await models.status.query().findOne({ name: params.name });
+    expect(status).toMatchObject(params);
+  });
+
   afterEach(async () => {
     await knex('task_statuses').truncate();
     await knex('users').truncate();
