@@ -29,3 +29,45 @@ mixin input(entity, propertyName, errors = {})
 
 mixin submit(form = null)
   input(class='btn btn-primary' type='submit')&attributes(attributes)
+
+mixin textarea(entity, propertyName, errors = {}, labelName)
+  - propertyErrors = get(errors, propertyName)
+  - classLine = 'form-control' + (isEmpty(propertyErrors) ? '' : ' is-invalid')
+  - inputId = getInputId(propertyName)
+  .mb-3(class=(errors[propertyName] && 'has-danger'))
+    label(
+      for= inputId
+    )= labelName
+    textarea(
+      id= inputId
+      name=getInputName(propertyName)
+      class=classLine
+    )&attributes(attributes)= (value=get(entity, propertyName, ''))
+    if !isEmpty(propertyErrors)
+      .invalid-feedback= propertyErrors.map(({ message }) => message).join('. ')
+
+mixin select(entity, propertyName, errors = {}, items, labelName, isMultiple = false)
+  - propertyErrors = get(errors, propertyName)
+  - classLine = 'form-control' + (!propertyErrors ? '' : ' is-invalid')
+  - inputId = getInputId(propertyName)
+  - selectedOptions = entity[propertyName] ? [entity[propertyName]].flat().map((item) => item.id ? Number(item.id) : Number(item)) : []
+  .form-group.mb-3
+    label(
+      for= inputId
+    )= labelName
+    select(
+      id= inputId,
+      name=getInputName(propertyName),
+      multiple=isMultiple
+      class=classLine
+    )
+      if !isMultiple
+        option
+      each item in items
+        - isSelect = includes(selectedOptions, item.id)
+        if propertyName === 'executorId'
+          option(value=item.id, selected= isSelect)= `${item.firstName} ${item.lastName}`
+        else
+          option(value=item.id, selected= isSelect)= item.name
+    if !isEmpty(propertyErrors)
+      .invalid-feedback= propertyErrors.map(({ message }) => message).join('. ')
