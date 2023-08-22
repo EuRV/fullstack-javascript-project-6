@@ -21,6 +21,7 @@ export default (app) => {
       const { id } = req.user;
 
       if (userId !== id) {
+        req.flash('error', i18next.t('flash.users.authorizationError'));
         return reply.redirect('/users');
       }
 
@@ -65,6 +66,7 @@ export default (app) => {
       const currentUser = req.user;
 
       if (userId !== currentUser.id) {
+        req.flash('error', i18next.t('flash.users.authorizationError'));
         return reply.redirect('/users');
       }
 
@@ -74,7 +76,6 @@ export default (app) => {
         req.flash('info', i18next.t('flash.users.delete.success'));
       } catch (err) {
         req.flash('error', i18next.t('flash.users.delete.error'));
-        reply.code(422);
       }
 
       reply.redirect('/users');
