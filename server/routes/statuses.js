@@ -30,7 +30,6 @@ export default (app) => {
       } catch ({ data }) {
         req.flash('error', i18next.t('flash.statuses.create.error'));
         reply.render('statuses/new', { status, errors: data });
-        reply.code(422);
       }
 
       return reply;
@@ -50,7 +49,6 @@ export default (app) => {
         req.flash('error', i18next.t('flash.statuses.update.error'));
         console.log(data);
         reply.render('statuses/edit', { status: { id, ...data }, errors: err.data });
-        reply.code(422);
       }
 
       return reply;
@@ -64,7 +62,6 @@ export default (app) => {
         req.flash('info', i18next.t('flash.statuses.delete.success'));
       } catch (err) {
         req.flash('error', i18next.t('flash.statuses.delete.error'));
-        reply.code(422);
       }
 
       reply.redirect('/statuses');
