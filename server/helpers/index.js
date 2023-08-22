@@ -3,6 +3,7 @@
 import i18next from 'i18next';
 import isEmpty from 'lodash/isEmpty.js';
 import get from 'lodash/get.js';
+import includes from 'lodash/includes.js';
 
 export default (app) => ({
   route(name) {
@@ -13,6 +14,7 @@ export default (app) => ({
   },
   isEmpty,
   get,
+  includes,
   getAlertClass(type) {
     switch (type) {
       // case 'failure':
