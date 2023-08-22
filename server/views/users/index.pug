@@ -22,5 +22,5 @@ block content
             td= formatDate(user.createdAt)
             td
               .d-flex.flex-wrap
-                a.btn.btn-primary.me-1(href='/users/' + user.id + '/edit')= t('views.users.edit')
-                +buttonTo('/users/' + user.id, 'delete')(class="btn btn-danger" value=t('views.users.delete'))
+                a.btn.btn-primary.me-1(href='/users/' + user.id + '/edit')= t('views.edit')
+                +buttonTo('/users/' + user.id, 'delete')(class="btn btn-danger" value=t('views.delete'))
