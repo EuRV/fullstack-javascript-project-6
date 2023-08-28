@@ -19,6 +19,14 @@ export default (app) => {
       });
       return reply;
     })
+    .get('/tasks/:id', { name: 'viewTask', preValidation: app.authenticate }, async (req, reply) => {
+      const { models } = app.objection;
+      const { id } = req.params;
+      const task = await models.task.query().findById(id).withGraphFetched('[status, creator, executor]');
+
+      reply.render('tasks/view', { task });
+      return reply;
+    })
     .post('/tasks', { name: 'createTask', preValidation: app.authenticate }, async (req, reply) => {
       const { models } = app.objection;
       const { data } = req.body;
