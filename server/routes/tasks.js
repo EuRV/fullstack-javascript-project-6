@@ -1,4 +1,4 @@
-// import i18next from 'i18next';
+import i18next from 'i18next';
 
 export default (app) => {
   app
@@ -37,6 +37,30 @@ export default (app) => {
         reply.redirect('/tasks');
       } catch (err) {
         console.error('error', err);
+      }
+
+      return reply;
+    })
+    .delete('/tasks/:id', { name: 'deleteTask', preValidation: app.authenticate }, async (req, reply) => {
+      const { models } = app.objection;
+      const { id: taskId } = req.params;
+      const { id: userId } = req.user;
+
+      const task = await models.task.query().findById(taskId);
+
+      if (userId !== task.creatorId) {
+        req.flash('error', i18next.t('flash.tasks.authorizationError'));
+        reply.redirect('/tasks');
+        return reply;
+      }
+
+      try {
+        await models.task.query().deleteById(taskId);
+        req.flash('info', i18next.t('flash.tasks.delete.success'));
+        reply.redirect('/tasks');
+      } catch (err) {
+        req.flash('error', i18next.t('flash.tasks.delete.error'));
+        reply.redirect('/tasks');
       }
 
       return reply;
