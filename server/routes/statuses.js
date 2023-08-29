@@ -47,7 +47,6 @@ export default (app) => {
         reply.redirect('/statuses');
       } catch (err) {
         req.flash('error', i18next.t('flash.statuses.update.error'));
-        console.log(data);
         reply.render('statuses/edit', { status: { id, ...data }, errors: err.data });
       }
 
