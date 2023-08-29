@@ -15,7 +15,10 @@ block content
         span= `${task.creator.firstName} ${task.creator.lastName}`
       .d-flex.flex-wrap.mb-3
         span.text-muted.me-2= t('views.tasks.executor')
-        span= `${task.executor.firstName} ${task.executor.lastName}`
+        if task.executor
+          span= `${task.executor.firstName} ${task.executor.lastName}`
+        else
+          span
       .d-flex.flex-wrap.mb-3
         span.text-muted.me-2= t('views.tasks.createdAt')
         span= formatDate(task.createdAt)
