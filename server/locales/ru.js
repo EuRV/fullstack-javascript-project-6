@@ -12,6 +12,7 @@ export default {
         },
       },
       users: {
+        authorizationError: 'Вы не можете редактировать или удалять другого пользователя',
         create: {
           error: 'Не удалось зарегистрировать',
           success: 'Пользователь успешно зарегистрирован',
@@ -39,6 +40,21 @@ export default {
           success: 'Статус успешно изменён',
         },
       },
+      tasks: {
+        authorizationError: 'Задачу может удалить только её автор',
+        create: {
+          error: 'Не удалось создать задачу',
+          success: 'Задача успешно создана',
+        },
+        delete: {
+          error: 'Не удалось удалить задачу',
+          success: 'Задача успешно удалена',
+        },
+        update: {
+          error: 'Не удалось изменить задачу',
+          success: 'Задача успешно изменена',
+        },
+      },
       authError: 'Доступ запрещён! Пожалуйста, авторизируйтесь.',
     },
     layouts: {
@@ -48,6 +64,7 @@ export default {
         signUp: 'Регистрация',
         signOut: 'Выход',
         statuses: 'Статусы',
+        tasks: 'Задачи',
       },
       form: {
         name: 'Наименование',
@@ -59,6 +76,8 @@ export default {
       },
     },
     views: {
+      delete: 'Удалить',
+      edit: 'Изменить',
       session: {
         new: {
           email: 'Email',
@@ -73,8 +92,6 @@ export default {
         id: 'ID',
         labelName: 'Наименование',
         createdAt: 'Дата создания',
-        edit: 'Изменить',
-        delete: 'Удалить',
         new: {
           header: 'Создание статуса',
           label: 'Наименование',
@@ -85,6 +102,20 @@ export default {
           change: 'Изменить',
         },
       },
+      tasks: {
+        name: 'Задачи',
+        createNew: 'Создать задачу',
+        id: 'ID',
+        label: 'Наименование',
+        status: 'Статус',
+        author: 'Автор',
+        executor: 'Исполнитель',
+        createdAt: 'Дата создания',
+        form: {
+          header: 'Создание задачи',
+          description: 'Описание',
+        },
+      },
       users: {
         name: 'Пользователи',
         id: 'ID',
@@ -92,9 +123,7 @@ export default {
         email: 'Email',
         createdAt: 'Дата создания',
         actions: 'Действия',
-        edit: 'Изменить',
         editLabel: 'Изменение пользователя',
-        delete: 'Удалить',
         new: {
           submit: 'Сохранить',
           signUp: 'Регистрация',
