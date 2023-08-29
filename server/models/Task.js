@@ -16,12 +16,11 @@ export default class Task extends Model {
       type: 'object',
       required: ['name', 'statusId', 'creatorId'],
       properties: {
-        id: { type: 'integer' },
-        statusId: { type: 'integer' },
+        statusId: { type: 'integer', minimum: 1 },
         creatorId: { type: 'integer' },
-        executorId: { type: 'integer' },
+        executorId: { type: ['integer', 'null'] },
         name: { type: 'string', minLength: 1 },
-        description: { type: 'string' },
+        description: { type: ['string', 'null'] },
       },
     };
   }
