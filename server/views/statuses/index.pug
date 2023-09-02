@@ -4,14 +4,14 @@ block header
   = t('views.statuses.name')
 
 block content
-  a(class="btn btn-primary mb-3" href='/statuses/new' role="button")=t('views.statuses.createNew')
+  a(class="btn btn-primary" href='/statuses/new' role="button")=t('views.statuses.createNew')
   .table-responsive
     table.table.table-borderless.table-striped.mt-5.bg-white
       thead
         tr
-          th= t('views.statuses.id')
-          th= t('views.statuses.labelName')
-          th= t('views.statuses.createdAt')
+          th.py-3= t('views.statuses.id')
+          th.py-3= t('views.statuses.labelName')
+          th.py-3= t('views.statuses.createdAt')
           th
       tbody
         each status in statuses
