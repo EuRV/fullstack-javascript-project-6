@@ -1,6 +1,6 @@
 // @ts-check
 
-// import i18next from 'i18next';
+import i18next from 'i18next';
 
 export default (app) => {
   app
@@ -9,6 +9,26 @@ export default (app) => {
 
       const labels = await models.label.query();
       reply.render('labels/index', { labels });
+      return reply;
+    })
+    .get('/labels/new', { name: 'newLabel', preValidation: app.authenticate }, (req, reply) => {
+      const label = new app.objection.models.label();
+      reply.render('labels/new', { label });
+    })
+    .post('/labels', { name: 'createLabel', preValidation: app.authenticate }, async (req, reply) => {
+      const { models } = app.objection;
+      const { data } = req.body;
+
+      try {
+        const validLabel = await models.label.fromJson({ ...data });
+        await models.label.query().insert(validLabel);
+        req.flash('info', i18next.t('flash.labels.create.success'));
+        reply.redirect('/labels');
+      } catch (err) {
+        req.flash('error', i18next.t('flash.labels.create.error'));
+        reply.render('labels/new', { label: data, errors: err.data });
+      }
+
       return reply;
     });
 };
