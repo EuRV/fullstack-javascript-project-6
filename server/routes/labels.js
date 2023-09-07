@@ -15,6 +15,13 @@ export default (app) => {
       const label = new app.objection.models.label();
       reply.render('labels/new', { label });
     })
+    .get('/labels/:id/edit', { name: 'editLabel', preValidation: app.authenticate }, async (req, reply) => {
+      const { models } = app.objection;
+      const { id } = req.params;
+      const label = await models.label.query().findById(id);
+      reply.render('labels/edit', { label });
+      return reply;
+    })
     .post('/labels', { name: 'createLabel', preValidation: app.authenticate }, async (req, reply) => {
       const { models } = app.objection;
       const { data } = req.body;
@@ -27,6 +34,24 @@ export default (app) => {
       } catch (err) {
         req.flash('error', i18next.t('flash.labels.create.error'));
         reply.render('labels/new', { label: data, errors: err.data });
+      }
+
+      return reply;
+    })
+    .patch('/labels/:id', { name: 'updateLabel', preValidation: app.authenticate }, async (req, reply) => {
+      const { models } = app.objection;
+      const { data } = req.body;
+      const { id } = req.params;
+      const label = await models.label.query().findById(id);
+
+      try {
+        const validLabel = await models.label.fromJson({ ...data });
+        await label.$query().update(validLabel);
+        req.flash('info', i18next.t('flash.labels.update.success'));
+        reply.redirect('/labels');
+      } catch (err) {
+        req.flash('error', i18next.t('flash.labels.update.error'));
+        reply.render('labels/edit', { label: { id, ...data }, errors: err.data });
       }
 
       return reply;
