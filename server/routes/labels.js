@@ -30,5 +30,19 @@ export default (app) => {
       }
 
       return reply;
+    })
+    .delete('/labels/:id', { name: 'deleteLabel', preValidation: app.authenticate }, async (req, reply) => {
+      const { models } = app.objection;
+      const { id } = req.params;
+
+      try {
+        await models.label.query().deleteById(id);
+        req.flash('info', i18next.t('flash.labels.delete.success'));
+      } catch (err) {
+        req.flash('error', i18next.t('flash.labels.delete.error'));
+      }
+
+      reply.redirect('/labels');
+      return reply;
     });
 };
