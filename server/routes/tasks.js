@@ -13,9 +13,10 @@ export default (app) => {
       const task = new app.objection.models.task();
       const statuses = await models.status.query();
       const users = await models.user.query();
+      const labels = await models.label.query();
 
       reply.render('tasks/new', {
-        task, statuses, users,
+        task, statuses, users, labels,
       });
       return reply;
     })
@@ -50,17 +51,25 @@ export default (app) => {
         name: data.name.trim(),
         description: data.description?.trim() || null,
       };
+      const labelsIds = data.labels ? data.labels.map((id) => ({ id: parseInt(id, 10) })) : null;
 
       try {
         const validTask = await models.task.fromJson({ ...parsedData });
-        await models.task.query().insert(validTask);
+        console.log({ ...validTask, labelsIds });
+        await models.task.transaction(async (trx) => {
+          const taskInserted = models.task.query(trx).insertGraph({ ...validTask, labels: labelsIds }, { relate: ['labels'] });
+          return taskInserted;
+        });
+        req.flash('info', i18next.t('flash.tasks.create.success'));
         reply.redirect('/tasks');
       } catch (err) {
+        console.log('error', err);
         req.flash('error', i18next.t('flash.tasks.create.error'));
         const statuses = await models.status.query();
         const users = await models.user.query();
+        const labels = await models.label.query();
         reply.render('tasks/new', {
-          task: data, statuses, users, errors: err.data,
+          task: data, statuses, users, labels, errors: err.data,
         });
       }
 
