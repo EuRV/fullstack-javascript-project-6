@@ -9,5 +9,6 @@ block content
     +textarea(task, 'description', errors, t('views.tasks.form.description'))(rows="3")
     +select(task, 'statusId', errors, statuses, t('views.tasks.status'))
     +select(task, 'executorId', errors, users, t('views.tasks.executor'))
+    +select(task, 'labels', errors, labels, t('views.tasks.labels'), true)
     input(name="_method" type="hidden" value="patch")
     +submit(task)(value=t('views.statuses.new.create')) 
