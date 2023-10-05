@@ -23,7 +23,7 @@ export default (app) => {
     .get('/tasks/:id', { name: 'viewTask', preValidation: app.authenticate }, async (req, reply) => {
       const { models } = app.objection;
       const { id } = req.params;
-      const task = await models.task.query().findById(id).withGraphFetched('[status, creator, executor]');
+      const task = await models.task.query().findById(id).withGraphFetched('[status, creator, executor, labels]');
 
       reply.render('tasks/view', { task });
       return reply;
