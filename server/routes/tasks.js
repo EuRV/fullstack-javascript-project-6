@@ -34,9 +34,10 @@ export default (app) => {
       const task = await models.task.query().findById(id).withGraphFetched('[status, creator, executor]');
       const statuses = await models.status.query();
       const users = await models.user.query();
+      const labels = await models.label.query();
 
       reply.render('tasks/edit', {
-        task, statuses, users,
+        task, statuses, users, labels,
       });
       return reply;
     })
@@ -55,7 +56,6 @@ export default (app) => {
 
       try {
         const validTask = await models.task.fromJson({ ...parsedData });
-        console.log({ ...validTask, labelsIds });
         await models.task.transaction(async (trx) => {
           const taskInserted = models.task.query(trx).insertGraph({ ...validTask, labels: labelsIds }, { relate: ['labels'] });
           return taskInserted;
@@ -76,31 +76,40 @@ export default (app) => {
       return reply;
     })
     .patch('/tasks/:id', { name: 'updateTask', preValidation: app.authenticate }, async (req, reply) => {
-      const { id } = req.params;
-      const { id: creatorId } = req.user;
-      const { data } = req.body;
       const { models } = app.objection;
-      const task = await models.task.query().findById(id);
+      const { data } = req.body;
+      const { id } = req.params;
 
       const parsedData = {
-        statusId: Number(data.statusId),
-        creatorId,
-        executorId: data.executorId ? Number(data.executorId) : null,
         name: data.name.trim(),
         description: data.description?.trim() || null,
+        statusId: Number(data.statusId),
+        executorId: data.executorId ? Number(data.executorId) : null,
+        labels: data.labels ? data.labels : null,
       };
 
       try {
-        const validTask = await models.task.fromJson({ ...parsedData });
-        await task.$query().update(validTask);
+        await models.task.transaction(async (trx) => {
+          const task = new models.task();
+          task.$set({ id, ...parsedData });
+          await task.$query(trx).findById(id).patch({ ...parsedData });
+          if (parsedData.labels) {
+            await task.$relatedQuery('labels', trx).unrelate();
+            const labels = [...parsedData.labels];
+            const results = labels.map((label) => task.$relatedQuery('labels', trx).relate(label));
+            await Promise.all(results);
+          }
+        });
         req.flash('info', i18next.t('flash.tasks.update.success'));
         reply.redirect('/tasks');
       } catch (err) {
+        console.log('error', err);
         req.flash('error', i18next.t('flash.tasks.update.error'));
         const statuses = await models.status.query();
         const users = await models.user.query();
+        const labels = await models.label.query();
         reply.render('tasks/edit', {
-          task: { id, ...data }, statuses, users, errors: err.data,
+          task: { id, ...data }, statuses, users, labels, errors: err.data,
         });
       }
 
@@ -120,7 +129,9 @@ export default (app) => {
       }
 
       try {
-        await models.task.query().deleteById(taskId);
+        await models.task.transaction(async (trx) => {
+          await task.$query(trx).delete();
+        });
         req.flash('info', i18next.t('flash.tasks.delete.success'));
         reply.redirect('/tasks');
       } catch (err) {
