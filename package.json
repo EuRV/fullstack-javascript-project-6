@@ -4,6 +4,9 @@
   "description": "[![Actions Status](https://github.com/EuRV/fullstack-javascript-project-6/actions/workflows/hexlet-check.yml/badge.svg)](https://github.com/EuRV/fullstack-javascript-project-6/actions)",
   "main": "server/plugin.js",
   "type": "module",
+  "engines": {
+    "node": ">=18.0.0"
+  },
   "scripts": {
     "prebuild": "rm -rf dist",
     "build": "webpack",
