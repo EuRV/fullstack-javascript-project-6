@@ -5,7 +5,7 @@ services:
   repo: https://github.com/EuRV/fullstack-javascript-project-6
   plan: free
   region: oregon
-  buildCommand: npm run build
-  startCommand: npm run start
+  buildCommand: make start-backend
+  startCommand: make start-frontend
   autoDeployTrigger: "off"
 version: "1"
