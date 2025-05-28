@@ -38,7 +38,6 @@ const setUpStaticAssets = (app) => {
   });
 };
 
-
 const setupLocalization = async () => {
   await i18next
     .init({
