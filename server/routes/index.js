@@ -1,15 +1,9 @@
-export default (app) => {
-  app
-    .get('/', (req, reply) => {
-      reply.render('welcome/index');
-    })
-    .get('/users', (req, reply) => {
-      reply.render('welcome/index');
-    })
-    .get('/session/new', (req, reply) => {
-      reply.render('welcome/index');
-    })
-    .get('/users/new', (req, reply) => {
-      reply.render('welcome/index');
-    });
-};
+import welcome from './welcome.js';
+import users from './users.js';
+
+const controllers = [
+  welcome,
+  users
+];
+
+export default (app) => controllers.forEach((f) => f(app));
