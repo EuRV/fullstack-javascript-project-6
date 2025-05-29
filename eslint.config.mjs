@@ -7,13 +7,14 @@ export default [
   pluginJs.configs.recommended,
   {
     files: [
-      '**/*.{js, mjs}',
+      '**/*.{js, mjs}'
     ],
   },
   {
     ignores: [
       'node_modules/',
       'dist/',
+      '**/*.config.js'
     ],
   },
   {
@@ -32,6 +33,10 @@ export default [
       '@stylistic/quotes': ['error', 'single'],
       'arrow-parens': 'off',
       '@stylistic/arrow-parens': ['error', 'always'],
+      '@stylistic/comma-dangle': ['error', {
+        arrays: 'never',
+        objects: 'always-multiline',
+      }],
     },
-  },
+  }
 ];
