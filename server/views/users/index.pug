@@ -1,0 +1,27 @@
+extends ../layouts/index.pug
+
+block header
+  = t('users.index.title')
+
+block content
+  .table-responsive
+    table.table.table-borderless.table-striped.mt-5.bg-white
+      thead
+        tr
+          th= t('users.index.id')
+          th= t('users.index.fullName')
+          th= t('users.index.email')
+          th= t('users.index.createdAt')
+          th= t('users.index.actions')
+    tbody
+      each user in users
+        tr
+          td= user.id
+          td= user.firstName + ' ' + user.lastName
+          td= user.email
+          td= formatDate(user.createdAt)
+          td
+            +formFor()(action=`/users/${user.id}` method='post')
+              a.btn.btn-primary.me-1(href=`/users/${user.id}/edit`)=t('buttons.change')
+              input(name="_method" type="hidden" value="delete")
+              input.btn.btn-danger(type="submit" value=t('buttons.delete'))
