@@ -16,5 +16,25 @@ export default {
         more: 'Узнать Больше',
       },
     },
+    users: {
+      index: {
+        title: 'Пользователи',
+        id: 'ID',
+        fullName: 'Полное имя',
+        email: 'Email',
+        createdAt: 'Дата создания',
+        actions: 'Действия',
+      },
+      new: {
+        title: 'Регистрация',
+        submit: 'Сохранить',
+      },
+    },
+    form: {
+      firstName: 'Имя',
+      lastName: 'Фамилия',
+      email: 'Email',
+      password: 'Пароль',
+    },
   },
 };
