@@ -2,14 +2,19 @@ import { fileURLToPath } from 'url';
 import path from 'path';
 import fastifyStatic from '@fastify/static';
 import fastifyView from '@fastify/view';
+import fastifyObjectionjs from 'fastify-objectionjs';
 import Pug from 'pug';
 import i18next from 'i18next';
 
 import ru from './locales/ru.js';
 import addRoutes from './routes/index.js';
 import getHelpers from './helpers/index.js';
+import * as knexConfig from '../knexfile.js';
+import models from './models/index.js';
 
 const __dirname = fileURLToPath(path.dirname(import.meta.url));
+
+const mode = process.env.NODE_ENV || 'development';
 
 const setUpViews = (app) => {
   const helpers = getHelpers(app);
@@ -49,7 +54,15 @@ const setupLocalization = async () => {
     });
 };
 
+const registerPlugins = async (app) => {
+  await app.register(fastifyObjectionjs, {
+    knexConfig: knexConfig[mode],
+    models,
+  });
+};
+
 export default async (app, _opts) => {
+  await registerPlugins(app);
   await setupLocalization();
   setUpViews(app);
   setUpStaticAssets(app);
