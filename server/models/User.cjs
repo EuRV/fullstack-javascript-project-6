@@ -1,5 +1,7 @@
 const objectionUnique = require('objection-unique');
+
 const BaseModel = require('./BaseModel.cjs');
+const { hashPassword } = require('../lib/secure.cjs');
 
 const unique = objectionUnique({ fields: ['email'] });
 
@@ -11,7 +13,7 @@ module.exports = class User extends unique(BaseModel) {
   static get jsonSchema() {
     return {
       type: 'object',
-      required: ['email', 'password', 'firstName', 'lastName'],
+      required: ['firstName', 'lastName', 'email', 'password'],
       properties: {
         id: { type: 'integer' },
         firstName: { type: 'string', minLength: 1 },
@@ -20,5 +22,9 @@ module.exports = class User extends unique(BaseModel) {
         password: { type: 'string', minLength: 3 },
       },
     };
+  }
+
+  set password(value) {
+    this.passwordDigest = hashPassword(value);
   }
 };
