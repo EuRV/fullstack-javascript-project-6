@@ -2,7 +2,9 @@ import { fileURLToPath } from 'url';
 import path from 'path';
 import fastifyStatic from '@fastify/static';
 import fastifyView from '@fastify/view';
+import fastifyFormbody from '@fastify/formbody';
 import fastifyObjectionjs from 'fastify-objectionjs';
+import qs from 'qs';
 import Pug from 'pug';
 import i18next from 'i18next';
 
@@ -55,6 +57,7 @@ const setupLocalization = async () => {
 };
 
 const registerPlugins = async (app) => {
+  await app.register(fastifyFormbody, { parser: qs.parse });
   await app.register(fastifyObjectionjs, {
     knexConfig: knexConfig[mode],
     models,
