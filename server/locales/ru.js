@@ -1,6 +1,11 @@
 export default {
   translation: {
     appName: 'Менеджер задач',
+    buttons: {
+      change: 'Изменить',
+      delete: 'Удалить',
+      save: 'Сохранить',
+    },
     layouts: {
       application: {
         users: 'Пользователи',
@@ -27,8 +32,10 @@ export default {
       },
       new: {
         title: 'Регистрация',
-        submit: 'Сохранить',
       },
+      edit: {
+        title: 'Изменение пользователя',
+      }
     },
     form: {
       firstName: 'Имя',
