@@ -3,6 +3,7 @@ import path from 'path';
 import fastifyStatic from '@fastify/static';
 import fastifyView from '@fastify/view';
 import fastifyFormbody from '@fastify/formbody';
+import fastifyMethodOverride from 'fastify-method-override';
 import fastifyObjectionjs from 'fastify-objectionjs';
 import qs from 'qs';
 import Pug from 'pug';
@@ -58,6 +59,7 @@ const setupLocalization = async () => {
 
 const registerPlugins = async (app) => {
   await app.register(fastifyFormbody, { parser: qs.parse });
+  await app.register(fastifyMethodOverride);
   await app.register(fastifyObjectionjs, {
     knexConfig: knexConfig[mode],
     models,
