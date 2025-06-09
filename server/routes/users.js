@@ -29,5 +29,16 @@ export default (app) => {
       }
 
       return reply;
+    })
+    .patch('/users/:id', async (req, reply) => {
+      const { id } = req.params;
+      const user = await objectionModels.user.query().findOne({ id });
+      try {
+        await user.$query().patch(req.body.data);
+        reply.redirect('/users');
+      } catch (error) {
+        reply.render('users/edit', { user, errors: error });
+      }
+      return reply;
     });
 };
