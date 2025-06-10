@@ -33,10 +33,13 @@ export default [
       '@stylistic/quotes': ['error', 'single'],
       'arrow-parens': 'off',
       '@stylistic/arrow-parens': ['error', 'always'],
+      'comma-dangle': 'off',
       '@stylistic/comma-dangle': ['error', {
         arrays: 'never',
         objects: 'always-multiline',
       }],
+      'brace-style': 'off',
+      '@stylistic/brace-style': ['error', '1tbs'],
     },
   }
 ];
