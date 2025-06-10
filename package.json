@@ -16,9 +16,10 @@
   "author": "EuVR",
   "license": "ISC",
   "dependencies": {
-    "@fastify/formbody": "7.x",
-    "@fastify/static": "6.x",
-    "@fastify/view": "7.x",
+    "@fastify/formbody": "^7.x",
+    "@fastify/passport": "^2.5.0",
+    "@fastify/static": "^6.x",
+    "@fastify/view": "^7.x",
     "bootstrap": "^5.x",
     "dotenv": "^16.x",
     "fastify": "^4.x",
