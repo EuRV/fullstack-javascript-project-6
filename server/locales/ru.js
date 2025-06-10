@@ -35,7 +35,7 @@ export default {
       },
       edit: {
         title: 'Изменение пользователя',
-      }
+      },
     },
     form: {
       firstName: 'Имя',
