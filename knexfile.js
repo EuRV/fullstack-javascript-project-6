@@ -1,5 +1,8 @@
 import path from 'path';
 import { fileURLToPath } from 'url';
+import { config } from 'dotenv';
+
+config();
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 
@@ -26,7 +29,13 @@ export const test = {
 
 export const production = {
   client: 'pg',
-  connection: process.env.PG_CONNECTION_STRING,
+  connection: {
+    host: process.env.DB_HOST,
+    user: process.env.DB_USER,
+    password: process.env.DB_PASSWORD,
+    database: process.env.DB_NAME,
+    port: parseInt(process.env.DB_PORT, 10) || 5432,
+  },
   // debug: true,
   useNullAsDefault: true,
   migrations,
