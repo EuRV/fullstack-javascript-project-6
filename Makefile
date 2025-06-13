@@ -4,6 +4,9 @@ install:
 build:
 	npm run build
 
+migrate:
+	knex migrate:latest
+
 start: start-frontend start-backend
 
 start-backend:
