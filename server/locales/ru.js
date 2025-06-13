@@ -4,6 +4,7 @@ export default {
     buttons: {
       change: 'Изменить',
       delete: 'Удалить',
+      login: 'Войти',
       save: 'Сохранить',
     },
     layouts: {
@@ -12,6 +13,11 @@ export default {
         signIn: 'Вход',
         signUp: 'Регистрация',
         signOut: 'Выход',
+      },
+    },
+    session: {
+      new: {
+        signIn: 'Вход',
       },
     },
     welcome: {
