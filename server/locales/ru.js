@@ -9,10 +9,13 @@ export default {
     },
     layouts: {
       application: {
-        users: 'Пользователи',
+        labels: 'Метки',
         signIn: 'Вход',
         signUp: 'Регистрация',
         signOut: 'Выход',
+        statuses: 'Статусы',
+        tasks: 'Задачи',
+        users: 'Пользователи',
       },
     },
     session: {
