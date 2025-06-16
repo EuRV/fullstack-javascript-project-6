@@ -4,7 +4,7 @@ block header
   = t('session.new.signIn')
 
 block content
-  +formFor()(action='/session/new' method='post')
+  +formFor()(action='/session' method='post')
     +input(signInForm, 'email', errors)(type="text")
     +input(signInForm, 'password')(type="password")
     +submit(signInForm)(value=t('buttons.login'))
