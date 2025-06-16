@@ -3,6 +3,9 @@ import path from 'path';
 import fastifyStatic from '@fastify/static';
 import fastifyView from '@fastify/view';
 import fastifyFormbody from '@fastify/formbody';
+import fastifySecureSession from '@fastify/secure-session';
+import { Authenticator } from '@fastify/passport';
+import fastifySensible from '@fastify/sensible';
 import fastifyMethodOverride from 'fastify-method-override';
 import fastifyObjectionjs from 'fastify-objectionjs';
 import qs from 'qs';
@@ -14,10 +17,13 @@ import addRoutes from './routes/index.js';
 import getHelpers from './helpers/index.js';
 import * as knexConfig from '../knexfile.js';
 import models from './models/index.js';
+import FormStrategy from './lib/passportStrategies/FormStrategy.js';
 
 const __dirname = fileURLToPath(path.dirname(import.meta.url));
 
 const mode = process.env.NODE_ENV || 'development';
+
+const fastifyPassport = new Authenticator();
 
 const setUpViews = (app) => {
   const helpers = getHelpers(app);
@@ -57,8 +63,47 @@ const setupLocalization = async () => {
     });
 };
 
+const addHooks = (app) => {
+  app.addHook('preHandler', async (req, reply) => {
+    reply.locals = {
+      isAuthenticated: () => req.isAuthenticated(),
+    };
+  });
+};
+
 const registerPlugins = async (app) => {
+  await app.register(fastifySensible);
   await app.register(fastifyFormbody, { parser: qs.parse });
+  await app.register(fastifySecureSession, {
+    secret: process.env.SESSION_KEY,
+    cookie: {
+      path: '/',
+    },
+  });
+
+  fastifyPassport.registerUserDeserializer(
+    (user) => app.objection.models.user.query().findById(user.id)
+  );
+  fastifyPassport.registerUserSerializer((user) => Promise.resolve(user));
+  fastifyPassport.use(new FormStrategy('form', app));
+  await app.register(fastifyPassport.initialize());
+  await app.register(fastifyPassport.secureSession());
+  await app.decorate('fp', fastifyPassport);
+  app.decorate('authenticate', (...args) => fastifyPassport.authenticate(
+    'form',
+    {
+      failureRedirect: '/',
+    }
+  )(...args));
+
+  await app.decorate('requireCurrentUser', (req, reply, done) => {
+    if (req.user.id !== Number(req.params.id)) {
+      reply.redirect('/users');
+      return reply;
+    }
+    return done();
+  });
+
   await app.register(fastifyMethodOverride);
   await app.register(fastifyObjectionjs, {
     knexConfig: knexConfig[mode],
@@ -72,6 +117,7 @@ export default async (app, _opts) => {
   setUpViews(app);
   setUpStaticAssets(app);
   addRoutes(app);
+  addHooks(app);
 
   return app;
 };
