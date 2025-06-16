@@ -18,6 +18,8 @@
   "dependencies": {
     "@fastify/formbody": "^7.x",
     "@fastify/passport": "^2.5.0",
+    "@fastify/secure-session": "^5.3.0",
+    "@fastify/sensible": "^5.6.0",
     "@fastify/static": "^6.x",
     "@fastify/view": "^7.x",
     "bootstrap": "^5.x",
