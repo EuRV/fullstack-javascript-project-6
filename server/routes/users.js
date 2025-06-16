@@ -41,5 +41,18 @@ export default (app) => {
         reply.render('users/edit', { user, errors: error });
       }
       return reply;
+    })
+    .delete('/users/:id', { preValidation: app.authenticate, preHandler: app.requireCurrentUser }, async (request, reply) => {
+      const { id } = request.params;
+      const user = await objectionModels.user.query().findById(id);
+
+      try {
+        request.logOut();
+        await user.$query().delete();
+        reply.redirect('/users');
+      } catch (e) {
+        reply.render('', { user, errors: e });
+      }
+      return reply;
     });
 };
