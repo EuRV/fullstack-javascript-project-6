@@ -27,4 +27,8 @@ module.exports = class User extends unique(BaseModel) {
   set password(value) {
     this.passwordDigest = hashPassword(value);
   }
+
+  verifyPassword(password) {
+    return hashPassword(password) === this.passwordDigest;
+  }
 };
