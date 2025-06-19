@@ -93,6 +93,7 @@ const registerPlugins = async (app) => {
     'form',
     {
       failureRedirect: '/',
+      failureFlash: i18next.t('flash.authError'),
     }
   )(...args));
 
