@@ -1,3 +1,5 @@
+import i18next from 'i18next';
+
 export default (app) => {
   const objectionModels = app.objection.models;
 
@@ -24,10 +26,10 @@ export default (app) => {
       try {
         const validUser = await objectionModels.user.fromJson(request.body.data);
         await objectionModels.user.query().insert(validUser);
-        req.flash('info', i18next.t('flash.users.create.success'));
+        request.flash('info', i18next.t('flash.users.create.success'));
         reply.redirect('/');
       } catch ({ data }) {
-        req.flash('error', i18next.t('flash.users.create.error'));
+        request.flash('error', i18next.t('flash.users.create.error'));
         reply.render('users/new', { user, errors: data });
       }
 
@@ -38,8 +40,10 @@ export default (app) => {
       const user = await objectionModels.user.query().findOne({ id });
       try {
         await user.$query().patch(request.body.data);
+        request.flash('info', i18next.t('flash.users.update.success'));
         reply.redirect('/users');
       } catch (error) {
+        request.flash('error', i18next.t('flash.users.update.error'));
         reply.render('users/edit', { user, errors: error });
       }
       return reply;
