@@ -99,6 +99,7 @@ const registerPlugins = async (app) => {
 
   await app.decorate('requireCurrentUser', (req, reply, done) => {
     if (req.user.id !== Number(req.params.id)) {
+      req.flash('error', i18next.t('flash.notCurrentUser'));
       reply.redirect('/users');
       return reply;
     }
