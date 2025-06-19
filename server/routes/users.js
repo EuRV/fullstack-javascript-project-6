@@ -55,9 +55,11 @@ export default (app) => {
       try {
         request.logOut();
         await user.$query().delete();
+        request.flash('info', i18next.t('flash.users.delete.success'));
         reply.redirect('/users');
-      } catch (e) {
-        reply.render('', { user, errors: e });
+      } catch (error) {
+        request.flash('error', i18next.t('flash.users.delete.error'));
+        reply.render('', { user, errors: error });
       }
       return reply;
     });
