@@ -11,14 +11,22 @@
     "prebuild": "rm -rf dist",
     "build": "webpack",
     "start": "fastify start server/plugin.js -l debug -P -o",
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "jest"
+  },
+  "jest": {
+    "modulePathIgnorePatterns": [
+      "<rootDir>/__tests__/helpers/"
+    ],
+    "setupFiles": [
+      "dotenv/config"
+    ]
   },
   "author": "EuVR",
   "license": "ISC",
   "dependencies": {
     "@fastify/formbody": "^7.x",
     "@fastify/passport": "^2.5.0",
-    "@fastify/secure-session": "^5.3.0",
+    "@fastify/secure-session": "^7.x",
     "@fastify/sensible": "^5.6.0",
     "@fastify/static": "^6.x",
     "@fastify/view": "^7.x",
@@ -43,9 +51,14 @@
   "devDependencies": {
     "@eslint/create-config": "^1.9.0",
     "@eslint/js": "^9.27.0",
+    "@faker-js/faker": "^9.8.0",
+    "@jest/globals": "^30.0.2",
     "@stylistic/eslint-plugin": "^4.4.0",
+    "@types/jest": "^30.0.0",
     "css-loader": "^6.x",
     "eslint": "^9.27.0",
-    "globals": "^16.2.0"
+    "globals": "^16.2.0",
+    "jest": "^30.0.2",
+    "jest-cli": "^30.0.2"
   }
 }
