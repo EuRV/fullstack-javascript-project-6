@@ -11,17 +11,4 @@ function hashPassword(password) {
     .digest('hex');
 }
 
-/**
- * @param {string} password
- * @param {string} storedHash
- * @returns {boolean}
- */
-function verifyPassword(password, storedHash) {
-  const hash = hashPassword(password);
-  return hash === storedHash;
-}
-
-module.exports = {
-  hashPassword,
-  verifyPassword,
-};
+module.exports = hashPassword;
