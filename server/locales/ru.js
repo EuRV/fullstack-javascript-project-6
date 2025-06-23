@@ -10,6 +10,14 @@ export default {
     flash: {
       authError: 'Доступ запрещён! Пожалуйста, авторизируйтесь.',
       notCurrentUser: 'Вы не можете редактировать или удалять другого пользователя',
+      session: {
+        create: {
+          success: 'Вы залогинены',
+        },
+        delete: {
+          success: 'Вы разлогинены',
+        },
+      },
       users: {
         create: {
           error: 'Не удалось зарегистрировать',
