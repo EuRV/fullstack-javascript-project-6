@@ -1,3 +1,5 @@
+import i18next from 'i18next';
+
 export default (app) => {
   app
     .get('/session/new', (request, reply) => {
@@ -19,11 +21,13 @@ export default (app) => {
         return reply;
       }
       await request.logIn(user);
+      request.flash('success', i18next.t('flash.session.create.success'));
       reply.redirect('/');
       return reply;
     }))
     .delete('/session', (request, reply) => {
       request.logOut();
+      request.flash('info', i18next.t('flash.session.delete.success'));
       reply.redirect('/');
     });
 };
