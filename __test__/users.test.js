@@ -4,7 +4,7 @@ import { fastify } from 'fastify';
 import init from '../server/plugin.js';
 import hashPassword from '../server/lib/secure.cjs';
 import {
-  getTestData, prepareUsersData, signInUser, truncateTables,
+  getTestData, prepareUsersData, signInUser, truncateTables
 } from './helpers/index.js';
 
 describe('test users CUD', () => {
