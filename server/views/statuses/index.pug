@@ -16,11 +16,10 @@ block content
       tbody
         each status in statuses
           tr
-            td= status.id
+            td= status.statusId
             td= status.name
             td= formatDate(status.createdAt)
             td
-              +formFor()(action=`/statuses/${status.id}` method='post')
-                a.btn.btn-primary.me-1(href=`/statuses/${status.id}/edit`)=t('buttons.change')
-                input(name="_method" type="hidden" value="delete")
-                input.btn.btn-danger(type="submit" value=t('buttons.delete'))
+              .d-flex.flex-wrap
+                a.btn.btn-primary.me-1(href=`/statuses/${status.statusId}/edit`)=t('buttons.change')
+                +buttonTo(`/statuses/${status.statusId}`, 'delete')(class="btn btn-danger" value=t('buttons.delete'))
