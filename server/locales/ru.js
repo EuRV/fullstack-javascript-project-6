@@ -18,6 +18,12 @@ export default {
           success: 'Вы разлогинены',
         },
       },
+      statuses: {
+        create: {
+          error: 'Не удалось создать статус',
+          success: 'Статус успешно создан',
+        },
+      },
       users: {
         create: {
           error: 'Не удалось зарегистрировать',
@@ -83,11 +89,18 @@ export default {
           create: 'Создать статус',
         },
       },
+      new: {
+        title: 'Создание статуса',
+        buttons: {
+          create: 'Создать',
+        },
+      },
     },
     form: {
       firstName: 'Имя',
       lastName: 'Фамилия',
       email: 'Email',
+      name: 'Наименование',
       password: 'Пароль',
     },
   },
