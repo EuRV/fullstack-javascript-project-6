@@ -72,6 +72,18 @@ export default {
         title: 'Изменение пользователя',
       },
     },
+    statuses: {
+      index: {
+        title: 'Статусы',
+        id: 'ID',
+        name: 'Наименование',
+        createdAt: 'Дата создания',
+        actions: 'Действия',
+        buttons: {
+          create: 'Создать статус',
+        },
+      },
+    },
     form: {
       firstName: 'Имя',
       lastName: 'Фамилия',
