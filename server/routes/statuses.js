@@ -14,6 +14,12 @@ export default (app) => {
       reply.render('statuses/new', { status });
       return reply;
     })
+    .get('/statuses/:id/edit', { preValidation: app.authenticate }, async (request, reply) => {
+      const { id: statusId } = request.params;
+      const status = await objectionModels.status.query().findOne({ statusId });
+      reply.render('statuses/edit', { status });
+      return reply;
+    })
     .post('/statuses', { preValidation: app.authenticate }, async (request, reply) => {
       const status = new objectionModels.status();
       status.$set(request.body.data);
@@ -26,6 +32,22 @@ export default (app) => {
       } catch ({ data }) {
         request.flash('error', i18next.t('flash.statuses.create.error'));
         reply.render('statuses/new', { status, errors: data });
+      }
+      return reply;
+    })
+    .patch('/statuses/:id', { preValidation: app.authenticate }, async (request, reply) => {
+      const { id: statusId } = request.params;
+      const status = await objectionModels.status.query().findOne({ statusId });
+
+      try {
+        const validNewStatus = await objectionModels.status.fromJson(request.body.data);
+        await status.$query().patch(validNewStatus);
+        request.flash('info', i18next.t('flash.statuses.update.success'));
+        reply.redirect('/statuses');
+      } catch ({ data }) {
+        console.log(data);
+        request.flash('error', i18next.t('flash.statuses.update.error'));
+        reply.render('statuses/edit', { status, errors: data });
       }
       return reply;
     });
