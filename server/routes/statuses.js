@@ -45,9 +45,22 @@ export default (app) => {
         request.flash('info', i18next.t('flash.statuses.update.success'));
         reply.redirect('/statuses');
       } catch ({ data }) {
-        console.log(data);
         request.flash('error', i18next.t('flash.statuses.update.error'));
         reply.render('statuses/edit', { status, errors: data });
+      }
+      return reply;
+    })
+    .delete('/statuses/:id', { preValidation: app.authenticate }, async (request, reply) => {
+      const { id: statusId } = request.params;
+      const status = await objectionModels.status.query().findOne({ statusId });
+
+      try {
+        await status.$query().delete();
+        request.flash('info', i18next.t('flash.statuses.delete.success'));
+        reply.redirect('/statuses');
+      } catch ({ data }) {
+        request.flash('error', i18next.t('flash.statuses.delete.error'));
+        reply.render('', { status, errors: data });
       }
       return reply;
     });
