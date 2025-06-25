@@ -2,6 +2,7 @@ export default {
   translation: {
     appName: 'Менеджер задач',
     buttons: {
+      create: 'Создать',
       change: 'Изменить',
       delete: 'Удалить',
       login: 'Войти',
@@ -22,6 +23,14 @@ export default {
         create: {
           error: 'Не удалось создать статус',
           success: 'Статус успешно создан',
+        },
+        update: {
+          error: 'Не удалось обновить статус',
+          success: 'Статус успешно изменён',
+        },
+        delete: {
+          error: 'Не удалось удалить статус',
+          success: 'Статус успешно удалён',
         },
       },
       users: {
@@ -91,9 +100,9 @@ export default {
       },
       new: {
         title: 'Создание статуса',
-        buttons: {
-          create: 'Создать',
-        },
+      },
+      edit: {
+        title: 'Изменение статуса',
       },
     },
     form: {
