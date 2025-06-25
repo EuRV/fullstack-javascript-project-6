@@ -42,9 +42,9 @@ export default (app) => {
         await user.$query().patch(request.body.data);
         request.flash('info', i18next.t('flash.users.update.success'));
         reply.redirect('/users');
-      } catch (error) {
+      } catch ({ data }) {
         request.flash('error', i18next.t('flash.users.update.error'));
-        reply.render('users/edit', { user, errors: error });
+        reply.render('users/edit', { user, errors: data });
       }
       return reply;
     })
