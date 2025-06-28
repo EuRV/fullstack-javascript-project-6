@@ -105,12 +105,33 @@ export default {
         title: 'Изменение статуса',
       },
     },
-    form: {
+    tasks: {
+      index: {
+        title: 'Задачи',
+        taskId: 'ID',
+        taskName: 'Наименование',
+        statusName: 'Статус',
+        creator: 'Автор',
+        executor: 'Исполнитель',
+        createdAt: 'Дата создания',
+        actions: 'Действия',
+        buttons: {
+          create: 'Создать задачу',
+        },
+      },
+      new: {
+        title: 'Создание задачи',
+      },
+    },
+    forms: {
+      description: 'Описание',
+      executorId: 'Исполнитель',
       firstName: 'Имя',
       lastName: 'Фамилия',
       email: 'Email',
       name: 'Наименование',
       password: 'Пароль',
+      statusId: 'Статус',
     },
   },
 };
