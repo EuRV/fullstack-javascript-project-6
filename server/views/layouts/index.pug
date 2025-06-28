@@ -23,7 +23,7 @@ html(lang="en")
               li.nav-item
                 a.nav-link(href='/users')= t('layouts.application.labels')
               li.nav-item
-                a.nav-link(href='/users')= t('layouts.application.tasks')
+                a.nav-link(href='/tasks')= t('layouts.application.tasks')
               li.nav-item
                 +buttonTo('/session', 'delete')(class="btn nav-link" value=t('layouts.application.signOut'))
             else
