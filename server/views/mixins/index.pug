@@ -15,13 +15,50 @@ mixin input(entity, propertyName, errors = {})
       name=getInputName(propertyName)
       class=classLine
       value=get(entity, propertyName, '')
-      placeholder=t(`form.${propertyName}`)
+      placeholder=t(`forms.${propertyName}`)
     )&attributes(attributes)
     if !isEmpty(propertyErrors)
       .invalid-feedback= propertyErrors.map(({ message }) => message).join('. ')
     label(
       for= inputId
-    )= t(`form.${propertyName}`)
+    )= t(`forms.${propertyName}`)
+
+mixin inputTextarea(entity, propertyName, errors = {})
+  - propertyErrors = get(errors, propertyName)
+  - classLine = 'form-control' + (isEmpty(propertyErrors) ? '' : ' is-invalid')
+  - inputId = getInputId(propertyName)
+  .mb-3(class=(errors[propertyName] && 'has-danger'))
+    label(
+      for= inputId
+    )= t(`forms.${propertyName}`)
+    textarea(
+      id= inputId
+      name=getInputName(propertyName)
+      class=classLine
+      rows="3"
+    )= get(entity, propertyName, '')
+    if !isEmpty(propertyErrors)
+      .invalid-feedback= propertyErrors.map(({ message }) => message).join('. ')
+
+mixin inputSelect(entity, propertyName, errors = {}, object)
+  - propertyErrors = get(errors, propertyName)
+  - inputId = getInputId(propertyName)
+  - classLine = 'form-control' + (isEmpty(propertyErrors) ? '' : ' is-invalid')
+  .mb-3(class=(errors[propertyName] && 'has-danger'))
+    label(for= inputId)= t(`forms.${propertyName}`)
+    select(
+      id= inputId
+      name=getInputName(propertyName)
+      class=classLine
+      )
+      option
+      each item in entity
+        option(
+          value= item.id
+          selected= (Number(object[propertyName]) === Number(item.id)) ? 'selected' : false 
+          )= item.name
+    if !isEmpty(propertyErrors)
+      .invalid-feedback= propertyErrors.map(({ message }) => message).join('. ')
 
 mixin submit(form = null)
   input(class='btn btn-primary' type='submit')&attributes(attributes)
