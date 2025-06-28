@@ -1,0 +1,33 @@
+extends ../layouts/index.pug
+
+block header
+  = t('tasks.index.title')
+
+block content
+  a.btn.btn-primary.mb-5(href='/tasks/new')= t('tasks.index.buttons.create')
+  .table-responsive
+    table.table.table-borderless.table-striped.mt-5.bg-white
+      thead
+        tr
+          th= t('tasks.index.taskId')
+          th= t('tasks.index.taskName')
+          th= t('tasks.index.statusName')
+          th= t('tasks.index.creator')
+          th= t('tasks.index.executor')
+          th= t('tasks.index.createdAt')
+          th= t('tasks.index.actions')
+      tbody
+        each task in tasks
+          tr
+            td= task.taskId
+            td
+              a(href='/tasks/view', { id: task.taskId })
+                = task.name
+            td= task.status.name
+            td= `${task.creator.firstName} ${task.creator.lastName}`
+            td= task.executor ? `${task.executor.firstName} ${task.executor.lastName}` : null
+            td= formatDate(task.createdAt)
+            td
+              .d-flex
+                a.btn.btn-primary.me-1(href=`/tasks/${task.taskId}/edit`)=t('buttons.change')
+                +buttonTo(`/tasks/${task.taskId}`, 'delete')(class="btn btn-danger" value=t('buttons.delete'))
