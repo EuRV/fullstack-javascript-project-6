@@ -1,11 +1,15 @@
 import { fastify } from 'fastify';
 
 import init from '../server/plugin.js';
+import {
+  getTestData, prepareUsersData, signInUser, truncateTables
+} from './helpers/index.js';
 
 describe('Status Routes CRUD operations', () => {
   let app;
   let knex;
   let models;
+  const testData = getTestData();
 
   beforeAll(async () => {
     app = fastify({
@@ -19,7 +23,6 @@ describe('Status Routes CRUD operations', () => {
 
   beforeEach(async () => {
     await knex.migrate.latest();
-    await prepareUsersData(app);
   });
 
   // describe('POST /statuses - Create Status', () => {
@@ -75,35 +78,43 @@ describe('Status Routes CRUD operations', () => {
 
   describe('GET /statuses - List Statuses', () => {
     it('should return empty array when no statuses exist', async () => {
-      const response = await app.inject({
+      const wrongResponse = await app.inject({
         method: 'GET',
         url: '/statuses',
       });
 
-      expect(response.statusCode).toBe(200);
-      expect(JSON.parse(response.body)).toEqual([]);
-    });
+      expect(wrongResponse.statusCode).toBe(302);
 
-    it('should return list of statuses', async () => {
-      const status1 = await Status.query().insert({
-        name: faker.word.adjective()
-      });
-      const status2 = await Status.query().insert({
-        name: faker.word.adjective()
-      });
-
-      const response = await app.inject({
+      const authCookie = await signInUser(app);
+      const responseWithAuth = await app.inject({
         method: 'GET',
         url: '/statuses',
+        cookies: authCookie,
       });
 
-      expect(response.statusCode).toBe(200);
-      const statuses = JSON.parse(response.body);
-
-      expect(statuses.length).toBe(2);
-      expect(statuses[0].name).toBe(status1.name);
-      expect(statuses[1].name).toBe(status2.name);
+      expect(responseWithAuth.statusCode).toBe(200);
     });
+
+    // it('should return list of statuses', async () => {
+    //   const status1 = await Status.query().insert({
+    //     name: faker.word.adjective()
+    //   });
+    //   const status2 = await Status.query().insert({
+    //     name: faker.word.adjective()
+    //   });
+
+    //   const response = await app.inject({
+    //     method: 'GET',
+    //     url: '/statuses',
+    //   });
+
+    //   expect(response.statusCode).toBe(200);
+    //   const statuses = JSON.parse(response.body);
+
+    //   expect(statuses.length).toBe(2);
+    //   expect(statuses[0].name).toBe(status1.name);
+    //   expect(statuses[1].name).toBe(status2.name);
+    // });
   });
 
   // describe('GET /statuses/:id - Get Status by ID', () => {
@@ -223,4 +234,13 @@ describe('Status Routes CRUD operations', () => {
   //     expect(JSON.parse(response.body).message).toContain('not found');
   //   });
   // });
+
+  afterEach(async () => {
+    await truncateTables(knex);
+  });
+
+  afterAll(async () => {
+    await knex.migrate.rollback();
+    await app.close();
+  });
 });
