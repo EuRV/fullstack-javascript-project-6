@@ -24,6 +24,26 @@ module.exports = class User extends unique(BaseModel) {
     };
   }
 
+  static modifiers = {
+    getFullName(query) {
+      const { raw } = User;
+      query.select(
+        'id',
+        raw("CONCAT(??, ' ', ??)", ['firstName', 'lastName']).as('fullName')
+      );
+    },
+
+    getPublicDate(query) {
+      const { raw } = User;
+      query.select(
+        'id',
+        raw("CONCAT(??, ' ', ??)", ['firstName', 'lastName']).as('fullName'),
+        'email',
+        'createdAt'
+      );
+    }
+  }
+
   set password(value) {
     this.passwordDigest = hashPassword(value);
   }
