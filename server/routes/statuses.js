@@ -36,7 +36,7 @@ export default (app) => {
       return reply;
     })
     .patch('/statuses/:id', { preValidation: app.authenticate }, async (request, reply) => {
-      const { data } = request.body
+      const { data } = request.body;
       const { id } = request.params;
       const status = await objectionModels.status.query().findById(id);
 
