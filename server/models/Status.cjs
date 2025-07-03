@@ -19,4 +19,13 @@ module.exports = class Status extends unique(BaseModel) {
       },
     };
   }
+
+  static modifiers = {
+    getShortData(query) {
+      query.select(
+        'id',
+        'name'
+      );
+    }
+  }
 };
