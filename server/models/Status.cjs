@@ -26,6 +26,6 @@ module.exports = class Status extends unique(BaseModel) {
         'id',
         'name'
       );
-    }
+    },
   }
 };

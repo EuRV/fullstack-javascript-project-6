@@ -41,7 +41,7 @@ module.exports = class User extends unique(BaseModel) {
         'email',
         'createdAt'
       );
-    }
+    },
   }
 
   set password(value) {
