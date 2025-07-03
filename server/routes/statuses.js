@@ -15,8 +15,8 @@ export default (app) => {
       return reply;
     })
     .get('/statuses/:id/edit', { preValidation: app.authenticate }, async (request, reply) => {
-      const { id: statusId } = request.params;
-      const status = await objectionModels.status.query().findOne({ statusId });
+      const { id } = request.params;
+      const status = await objectionModels.status.query().findById(id);
       reply.render('statuses/edit', { status });
       return reply;
     })
@@ -36,23 +36,23 @@ export default (app) => {
       return reply;
     })
     .patch('/statuses/:id', { preValidation: app.authenticate }, async (request, reply) => {
-      const { id: statusId } = request.params;
-      const status = await objectionModels.status.query().findOne({ statusId });
+      const { data } = request.body
+      const { id } = request.params;
+      const status = await objectionModels.status.query().findById(id);
 
       try {
-        const validNewStatus = await objectionModels.status.fromJson(request.body.data);
-        await status.$query().patch(validNewStatus);
+        await status.$query().patch(data);
         request.flash('info', i18next.t('flash.statuses.update.success'));
         reply.redirect('/statuses');
-      } catch ({ data }) {
+      } catch (errors) {
         request.flash('error', i18next.t('flash.statuses.update.error'));
-        reply.render('statuses/edit', { status, errors: data });
+        reply.render('statuses/edit', { status, errors });
       }
       return reply;
     })
     .delete('/statuses/:id', { preValidation: app.authenticate }, async (request, reply) => {
-      const { id: statusId } = request.params;
-      const status = await objectionModels.status.query().findOne({ statusId });
+      const { id } = request.params;
+      const status = await objectionModels.status.query().findById(id);
 
       try {
         await status.$query().delete();
