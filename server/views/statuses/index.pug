@@ -16,10 +16,10 @@ block content
       tbody
         each status in statuses
           tr
-            td= status.statusId
+            td= status.id
             td= status.name
             td= formatDate(status.createdAt)
             td
               .d-flex.flex-wrap
-                a.btn.btn-primary.me-1(href=`/statuses/${status.statusId}/edit`)=t('buttons.change')
-                +buttonTo(`/statuses/${status.statusId}`, 'delete')(class="btn btn-danger" value=t('buttons.delete'))
+                a.btn.btn-primary.me-1(href=`/statuses/${status.id}/edit`)=t('buttons.change')
+                +buttonTo(`/statuses/${status.id}`, 'delete')(class="btn btn-danger" value=t('buttons.delete'))

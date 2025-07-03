@@ -9,7 +9,7 @@ block content
     table.table.table-borderless.table-striped.mt-5.bg-white
       thead
         tr
-          th= t('tasks.index.taskId')
+          th= t('tasks.index.id')
           th= t('tasks.index.taskName')
           th= t('tasks.index.statusName')
           th= t('tasks.index.creator')
@@ -19,9 +19,9 @@ block content
       tbody
         each task in tasks
           tr
-            td= task.taskId
+            td= task.id
             td
-              a(href='/tasks/view', { id: task.taskId })
+              a(href='/tasks/view', { id: task.id })
                 = task.name
             td= task.status.name
             td= `${task.creator.firstName} ${task.creator.lastName}`
@@ -29,5 +29,5 @@ block content
             td= formatDate(task.createdAt)
             td
               .d-flex
-                a.btn.btn-primary.me-1(href=`/tasks/${task.taskId}/edit`)=t('buttons.change')
-                +buttonTo(`/tasks/${task.taskId}`, 'delete')(class="btn btn-danger" value=t('buttons.delete'))
+                a.btn.btn-primary.me-1(href=`/tasks/${task.id}/edit`)=t('buttons.change')
+                +buttonTo(`/tasks/${task.id}`, 'delete')(class="btn btn-danger" value=t('buttons.delete'))

@@ -14,7 +14,7 @@ module.exports = class Status extends unique(BaseModel) {
       type: 'object',
       required: ['name'],
       properties: {
-        status_id: { type: 'integer' },
+        id: { type: 'integer' },
         name: { type: 'string', minLength: 1, maxLength: 50 },
       },
     };

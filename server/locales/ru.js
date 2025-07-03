@@ -108,7 +108,7 @@ export default {
     tasks: {
       index: {
         title: 'Задачи',
-        taskId: 'ID',
+        id: 'ID',
         taskName: 'Наименование',
         statusName: 'Статус',
         creator: 'Автор',
