@@ -5,7 +5,7 @@ export default (app) => {
 
   app
     .get('/users', async (request, reply) => {
-      const users = await objectionModels.user.query();
+      const users = await objectionModels.user.query().modify('getPublicDate');
       reply.render('users/index', { users });
       return reply;
     })
