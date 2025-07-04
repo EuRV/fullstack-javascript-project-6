@@ -22,6 +22,10 @@ export const prepareUsersData = async (app) => {
   await knex('users').insert(getFixtureData('users.json'));
 };
 
+export const createRandomStatus = () => ({
+  name: faker.word.adjective(),
+});
+
 export const signInUser = async (app) => {
   prepareUsersData(app);
   const responseSignIn = await app.inject({
