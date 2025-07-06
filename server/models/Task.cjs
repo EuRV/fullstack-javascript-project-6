@@ -14,10 +14,23 @@ module.exports = class Task extends BaseModel {
         name: { type: 'string', minLength: 1 },
         description: { type: 'string' },
         statusId: { type: 'integer', minimum: 1 },
-        creatorId: { type: 'integer' },
-        executorId: { type: 'integer' },
+        creatorId: { type: 'integer', minimum: 1 },
+        executorId: { type: ['integer', 'null'] },
       },
     };
+  }
+
+  $parseJson(json, opt) {
+    json = super.$parseJson(json, opt);
+
+    const converted = {
+      ...json,
+      statusId: Number(json.statusId),
+      creatorId: Number(json.creatorId),
+      executorId: Number(json.executorId) || null,
+    };
+
+    return converted;
   }
 
   static relationMappings = {
