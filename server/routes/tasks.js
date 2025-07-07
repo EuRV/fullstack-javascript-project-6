@@ -7,8 +7,8 @@ export default (app) => {
     .get('/tasks', { preValidation: app.authenticate }, async (request, reply) => {
       const tasks = await objectionModels.task
         .query()
-        .withGraphJoined('[status, executor(getFullName), creator(getFullName)]');
-
+        .withGraphJoined('[status(getShortData), executor(getFullName), creator(getFullName)]');
+      console.log(tasks)
       reply.render('tasks/index', { tasks });
       return reply;
     })
