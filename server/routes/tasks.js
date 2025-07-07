@@ -53,5 +53,27 @@ export default (app) => {
         reply.render('tasks/new', { task, executors, statuses, errors: data });
       }
       return reply;
+    })
+    .patch('/tasks/:id', { preValidation: app.authenticate }, async (request, reply) => {
+      const { id } = request.params;
+      const dataTask = {
+        ...request.body.data,
+        creatorId: request.session.get('passport').id,
+      };
+      const task = await objectionModels.task.query().findById(id);
+
+      try {
+        await task.$query().patch(dataTask);
+        request.flash('info', i18next.t('flash.tasks.update.success'));
+        reply.redirect('/tasks');
+      } catch ({ data }) {
+        request.flash('error', i18next.t('flash.tasks.update.error'));
+        const [executors, statuses] = await Promise.all([
+          objectionModels.user.query().modify('getFullName'),
+          objectionModels.status.query().modify('getShortData')
+        ]);
+        reply.render('tasks/edit', { task, executors, statuses, errors: data });
+      }
+      return reply;
     });
 };
