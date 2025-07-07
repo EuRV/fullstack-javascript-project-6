@@ -13,7 +13,7 @@ export default (app) => {
       return reply;
     })
     .get('/tasks/new', { preValidation: app.authenticate }, async (request, reply) => {
-      const task = {};
+      const task = new objectionModels.task();
       const [executors, statuses] = await Promise.all([
         objectionModels.user.query().modify('getFullName'),
         objectionModels.status.query().modify('getShortData')
