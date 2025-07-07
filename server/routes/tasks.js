@@ -8,7 +8,7 @@ export default (app) => {
       const tasks = await objectionModels.task
         .query()
         .withGraphJoined('[status(getShortData), executor(getFullName), creator(getFullName)]');
-      console.log(tasks)
+
       reply.render('tasks/index', { tasks });
       return reply;
     })
@@ -20,6 +20,16 @@ export default (app) => {
       ]);
 
       reply.render('tasks/new', { task, executors, statuses });
+      return reply;
+    }).get('/tasks/:id/edit', { preValidation: app.authenticate }, async (request, reply) => {
+      const { id } = request.params;
+      const task = await objectionModels.task.query().findById(id);
+      const [executors, statuses] = await Promise.all([
+        objectionModels.user.query().modify('getFullName'),
+        objectionModels.status.query().modify('getShortData')
+      ]);
+
+      reply.render('tasks/edit', { task, executors, statuses });
       return reply;
     })
     .post('/tasks', { preValidation: app.authenticate }, async (request, reply) => {
