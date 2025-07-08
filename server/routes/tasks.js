@@ -21,7 +21,17 @@ export default (app) => {
 
       reply.render('tasks/new', { task, executors, statuses });
       return reply;
-    }).get('/tasks/:id/edit', { preValidation: app.authenticate }, async (request, reply) => {
+    })
+    .get('/tasks/:id', { preValidation: app.authenticate }, async (request, reply) => {
+      const { id } = request.params;
+      const task = await objectionModels.task
+        .query()
+        .findById(id)
+        .withGraphJoined('[status(getShortData), executor(getFullName), creator(getFullName)]');
+      reply.render('tasks/view', { task });
+      return reply;
+    })
+    .get('/tasks/:id/edit', { preValidation: app.authenticate }, async (request, reply) => {
       const { id } = request.params;
       const task = await objectionModels.task.query().findById(id);
       const [executors, statuses] = await Promise.all([
@@ -37,7 +47,7 @@ export default (app) => {
       const dataTask = {
         ...request.body.data,
         creatorId: request.session.get('passport').id,
-      }
+      };
       task.$set(dataTask);
 
       try {
