@@ -20,6 +20,17 @@ module.exports = class Status extends unique(BaseModel) {
     };
   }
 
+  static relationMappings = {
+    tasks: {
+      relation: BaseModel.HasManyRelation,
+      modelClass: 'Task.cjs',
+      join: {
+        from: 'statuses.id',
+        to: 'tasks.statusId'
+      }
+    },
+  }
+
   static modifiers = {
     getShortData(query) {
       query.select(
