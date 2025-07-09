@@ -24,6 +24,25 @@ module.exports = class User extends unique(BaseModel) {
     };
   }
 
+  static relationMappings = {
+    createdTasks: {
+      relation: BaseModel.HasManyRelation,
+      modelClass: 'Task.cjs',
+      join: {
+        from: 'users.id',
+        to: 'tasks.creatorId'
+      }
+    },
+    assignedTasks: {
+      relation: BaseModel.HasManyRelation,
+      modelClass: 'Task.cjs',
+      join: {
+        from: 'users.id',
+        to: 'tasks.executorId'
+      }
+    },
+  };
+
   static modifiers = {
     getFullName(query) {
       const { raw } = User;
