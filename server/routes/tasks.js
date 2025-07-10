@@ -66,11 +66,12 @@ export default (app) => {
     })
     .patch('/tasks/:id', { preValidation: app.authenticate }, async (request, reply) => {
       const { id } = request.params;
+      const task = await objectionModels.task.query().findById(id);
       const dataTask = {
         ...request.body.data,
-        creatorId: request.session.get('passport').id,
+        creatorId: task.creatorId,
       };
-      const task = await objectionModels.task.query().findById(id);
+      task.$set(dataTask);
 
       try {
         await task.$query().patch(dataTask);
