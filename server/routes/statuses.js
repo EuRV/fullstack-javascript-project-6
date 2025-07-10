@@ -58,9 +58,9 @@ export default (app) => {
         await status.$query().delete();
         request.flash('info', i18next.t('flash.statuses.delete.success'));
         reply.redirect('/statuses');
-      } catch ({ data }) {
+      } catch (error) {
         request.flash('error', i18next.t('flash.statuses.delete.error'));
-        reply.render('', { status, errors: data });
+        reply.redirect('/statuses');
       }
       return reply;
     });
