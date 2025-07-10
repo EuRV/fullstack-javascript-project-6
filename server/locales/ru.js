@@ -33,6 +33,21 @@ export default {
           success: 'Статус успешно удалён',
         },
       },
+      tasks: {
+        create: {
+          success: 'Задача успешно создана',
+          error: 'Не удалось создать задачу',
+        },
+        update: {
+          success: 'Задача успешно изменена',
+          error: 'Не удалось обновить задачу',
+        },
+        delete: {
+          success: 'Задача успешно удалена',
+          error: 'Не удалось удалить задачу',
+          errorAccess: 'Задачу может удалить только её автор',
+        },
+      },
       users: {
         create: {
           error: 'Не удалось зарегистрировать',
@@ -71,22 +86,6 @@ export default {
         more: 'Узнать Больше',
       },
     },
-    users: {
-      index: {
-        title: 'Пользователи',
-        id: 'ID',
-        fullName: 'Полное имя',
-        email: 'Email',
-        createdAt: 'Дата создания',
-        actions: 'Действия',
-      },
-      new: {
-        title: 'Регистрация',
-      },
-      edit: {
-        title: 'Изменение пользователя',
-      },
-    },
     statuses: {
       index: {
         title: 'Статусы',
@@ -121,6 +120,25 @@ export default {
       },
       new: {
         title: 'Создание задачи',
+      },
+      edit: {
+        title: 'Изменение задачи',
+      },
+    },
+    users: {
+      index: {
+        title: 'Пользователи',
+        id: 'ID',
+        fullName: 'Полное имя',
+        email: 'Email',
+        createdAt: 'Дата создания',
+        actions: 'Действия',
+      },
+      new: {
+        title: 'Регистрация',
+      },
+      edit: {
+        title: 'Изменение пользователя',
       },
     },
     forms: {
