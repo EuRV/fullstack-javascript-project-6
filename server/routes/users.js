@@ -53,13 +53,13 @@ export default (app) => {
       const user = await objectionModels.user.query().findById(id);
 
       try {
-        request.logOut();
         await user.$query().delete();
+        request.logOut();
         request.flash('info', i18next.t('flash.users.delete.success'));
         reply.redirect('/users');
       } catch (error) {
         request.flash('error', i18next.t('flash.users.delete.error'));
-        reply.render('', { user, errors: error });
+        reply.redirect('/users');
       }
       return reply;
     });
