@@ -86,5 +86,25 @@ export default (app) => {
         reply.render('tasks/edit', { task, executors, statuses, errors: data });
       }
       return reply;
+    })
+    .delete('/tasks/:id', { preValidation: app.authenticate }, async (request, reply) => {
+      const { id } = request.params;
+      const currentUserId = parseInt((request.session.get('passport').id), 10);
+      const task = await objectionModels.task.query().findById(id);
+
+      if (currentUserId !== task.creatorId) {
+        request.flash('error', i18next.t('flash.tasks.delete.errorAccess'));
+        reply.redirect('/tasks');
+        return reply;
+      }
+
+      try {
+        await task.$query().delete();
+        request.flash('info', i18next.t('flash.tasks.delete.success'));
+        reply.redirect('/tasks');
+      } catch ({ data }) {
+        request.flash('error', i18next.t('flash.tasks.delete.error'));
+      }
+      return reply;
     });
 };
