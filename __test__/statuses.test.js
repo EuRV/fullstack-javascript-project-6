@@ -2,14 +2,13 @@ import { fastify } from 'fastify';
 
 import init from '../server/plugin.js';
 import {
-  getTestData, createRandomStatus, signInUser, truncateTables
+  createRandomStatus, signInUser, truncateTables
 } from './helpers/index.js';
 
 describe('Status Routes CRUD operations', () => {
   let app;
   let knex;
   let models;
-  const testData = getTestData();
 
   beforeAll(async () => {
     app = fastify({
