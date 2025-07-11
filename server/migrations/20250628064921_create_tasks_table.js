@@ -22,7 +22,7 @@ export const up = (knex) => (
       .references('users.id')
       .onUpdate('CASCADE') // На будущее
       .onDelete('RESTRICT'); // Запрещаем удаление создателя задач
-    
+
     table.foreign('executor_id')
       .references('users.id')
       .onUpdate('CASCADE') // На будущее
