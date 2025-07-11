@@ -30,16 +30,16 @@ module.exports = class User extends unique(BaseModel) {
       modelClass: 'Task.cjs',
       join: {
         from: 'users.id',
-        to: 'tasks.creatorId'
-      }
+        to: 'tasks.creatorId',
+      },
     },
     assignedTasks: {
       relation: BaseModel.HasManyRelation,
       modelClass: 'Task.cjs',
       join: {
         from: 'users.id',
-        to: 'tasks.executorId'
-      }
+        to: 'tasks.executorId',
+      },
     },
   };
 
@@ -61,7 +61,7 @@ module.exports = class User extends unique(BaseModel) {
         'createdAt'
       );
     },
-  }
+  };
 
   set password(value) {
     this.passwordDigest = hashPassword(value);

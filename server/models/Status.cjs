@@ -26,10 +26,10 @@ module.exports = class Status extends unique(BaseModel) {
       modelClass: 'Task.cjs',
       join: {
         from: 'statuses.id',
-        to: 'tasks.statusId'
-      }
+        to: 'tasks.statusId',
+      },
     },
-  }
+  };
 
   static modifiers = {
     getShortData(query) {
@@ -38,5 +38,5 @@ module.exports = class Status extends unique(BaseModel) {
         'name'
       );
     },
-  }
+  };
 };
