@@ -102,7 +102,7 @@ export default (app) => {
         await task.$query().delete();
         request.flash('info', i18next.t('flash.tasks.delete.success'));
         reply.redirect('/tasks');
-      } catch ({ data }) {
+      } catch (error) {
         request.flash('error', i18next.t('flash.tasks.delete.error'));
       }
       return reply;
