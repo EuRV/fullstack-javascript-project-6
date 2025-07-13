@@ -40,13 +40,13 @@ module.exports = class User extends unique(BaseModel) {
     const old = queryContext.old;
 
     const changedFields = Object.keys(this).filter(key =>
-      key !== 'updated_at' &&
+      key !== 'updatedAt' &&
       this[key] !== this[key] !== old[key] &&
       key[0] !== '$'
     );
 
     if (changedFields.length > 0) {
-      this.updated_at = new Date().toISOString();
+      this.updatedAt = new Date().toISOString();
     }
   }
 
