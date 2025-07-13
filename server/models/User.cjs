@@ -20,8 +20,34 @@ module.exports = class User extends unique(BaseModel) {
         lastName: { type: 'string', minLength: 1 },
         email: { type: 'string', minLength: 1 },
         password: { type: 'string', minLength: 3 },
+        createdAt: { type: 'string', format: 'date-time' },
+        updatedAt: { type: 'string', format: 'date-time' },
       },
     };
+  }
+
+  async $beforeInsert(queryContext) {
+    await super.$beforeInsert(queryContext);
+
+    const now = new Date().toISOString();
+    this.createdAt = now;
+    this.updatedAt = now;
+  }
+
+  async $beforeUpdate(opt, queryContext) {
+    await super.$beforeUpdate(opt, queryContext);
+
+    const old = queryContext.old;
+
+    const changedFields = Object.keys(this).filter(key =>
+      key !== 'updated_at' &&
+      this[key] !== this[key] !== old[key] &&
+      key[0] !== '$'
+    );
+
+    if (changedFields.length > 0) {
+      this.updated_at = new Date().toISOString();
+    }
   }
 
   static relationMappings = {
