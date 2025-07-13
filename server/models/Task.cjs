@@ -22,20 +22,22 @@ module.exports = class Task extends BaseModel {
     };
   }
 
-  $beforeInsert(queryContext) {
-    super.$beforeInsert(queryContext);
+  async $beforeInsert(queryContext) {
+    await super.$beforeInsert(queryContext);
 
     const now = new Date().toISOString();
     this.createdAt = now;
     this.updatedAt = now;
   }
 
-  $beforeUpdate(opt, queryContext) {
-    super.$beforeUpdate(opt, queryContext);
+  async $beforeUpdate(opt, queryContext) {
+    await super.$beforeUpdate(opt, queryContext);
+
+    const old = queryContext.old;
 
     const changedFields = Object.keys(this).filter(key =>
       key !== 'updated_at' &&
-      this[key] !== queryContext.old &&
+      this[key] !== this[key] !== old[key] &&
       key[0] !== '$'
     );
 
