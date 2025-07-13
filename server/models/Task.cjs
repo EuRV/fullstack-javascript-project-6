@@ -16,8 +16,32 @@ module.exports = class Task extends BaseModel {
         statusId: { type: 'integer', minimum: 1 },
         creatorId: { type: 'integer', minimum: 1 },
         executorId: { type: ['integer', 'null'] },
+        createdAt: { type: 'string', format: 'date-time' },
+        updatedAt: { type: 'string', format: 'date-time' },
       },
     };
+  }
+
+  $beforeInsert(queryContext) {
+    super.$beforeInsert(queryContext);
+
+    const now = new Date().toISOString();
+    this.createdAt = now;
+    this.updatedAt = now;
+  }
+
+  $beforeUpdate(opt, queryContext) {
+    super.$beforeUpdate(opt, queryContext);
+
+    const changedFields = Object.keys(this).filter(key =>
+      key !== 'updated_at' &&
+      this[key] !== queryContext.old &&
+      key[0] !== '$'
+    );
+
+    if (changedFields.length > 0) {
+      this.updated_at = new Date().toISOString();
+    }
   }
 
   $parseJson(json, opt) {

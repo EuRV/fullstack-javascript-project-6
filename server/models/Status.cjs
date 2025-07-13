@@ -16,8 +16,34 @@ module.exports = class Status extends unique(BaseModel) {
       properties: {
         id: { type: 'integer' },
         name: { type: 'string', minLength: 1, maxLength: 50 },
+        createdAt: { type: 'string', format: 'date-time' },
+        updatedAt: { type: 'string', format: 'date-time' },
       },
     };
+  }
+
+  async $beforeInsert(queryContext) {
+    await super.$beforeInsert(queryContext);
+
+    const now = new Date().toISOString();
+    this.createdAt = now;
+    this.updatedAt = now;
+  }
+
+  async $beforeUpdate(opt, queryContext) {
+    await super.$beforeUpdate(opt, queryContext);
+
+    const old = queryContext.old;
+
+    const changedFields = Object.keys(this).filter(key =>
+      key !== 'updatedAt' &&
+      this[key] !== this[key] !== old[key] &&
+      key[0] !== '$'
+    );
+
+    if (changedFields.length > 0) {
+      this.updatedAt = new Date().toISOString();
+    }
   }
 
   static relationMappings = {
