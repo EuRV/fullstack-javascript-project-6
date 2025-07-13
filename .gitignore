@@ -3,3 +3,4 @@
 /coverage
 .env
 database.sqlite
+-- SQLite.sql
