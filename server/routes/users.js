@@ -20,17 +20,13 @@ export default (app) => {
       return reply;
     })
     .post('/users', async (request, reply) => {
-      const user = new objectionModels.user();
-      user.$set(request.body.data);
-
       try {
-        const validUser = await objectionModels.user.fromJson(request.body.data);
-        await objectionModels.user.query().insert(validUser);
+        await objectionModels.user.query().insert(request.body.data);
         request.flash('info', i18next.t('flash.users.create.success'));
         reply.redirect('/');
       } catch ({ data }) {
         request.flash('error', i18next.t('flash.users.create.error'));
-        reply.render('users/new', { user, errors: data });
+        reply.render('users/new', { user: request.body.data, errors: data });
       }
 
       return reply;
