@@ -33,11 +33,11 @@ module.exports = class Status extends unique(BaseModel) {
   async $beforeUpdate(opt, queryContext) {
     await super.$beforeUpdate(opt, queryContext);
 
-    const old = queryContext.old;
+    const { old } = opt;
 
     const changedFields = Object.keys(this).filter(key =>
       key !== 'updatedAt' &&
-      this[key] !== this[key] !== old[key] &&
+      this[key] !== old[key] &&
       key[0] !== '$'
     );
 

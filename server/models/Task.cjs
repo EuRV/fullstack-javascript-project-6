@@ -33,11 +33,11 @@ module.exports = class Task extends BaseModel {
   async $beforeUpdate(opt, queryContext) {
     await super.$beforeUpdate(opt, queryContext);
 
-    const old = queryContext.old;
+    const { old } = opt;
 
     const changedFields = Object.keys(this).filter(key =>
       key !== 'updated_at' &&
-      this[key] !== this[key] !== old[key] &&
+      this[key] !== old[key] &&
       key[0] !== '$'
     );
 
