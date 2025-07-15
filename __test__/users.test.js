@@ -218,7 +218,6 @@ describe('User Routes CRUD operations', () => {
 
       const usersAfterDeletion = await models.user.query();
       expect(response.statusCode).toBe(302);
-      console.log(usersBeforeDeletion, usersAfterDeletion)
       expect(usersAfterDeletion.length).toEqual(usersBeforeDeletion.length)
     });
   });
