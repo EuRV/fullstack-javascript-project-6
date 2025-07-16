@@ -70,7 +70,7 @@ export const createRandomTask = {
       name: faker.lorem.sentence(),
       description: faker.lorem.paragraph(),
       statusId: faker.number.int({ min: 1, max: 3 }),
-      creatorId: faker.number.int({ min: 1, max: 3 }),
+      creatorId: 2,
       executorId: faker.number.int({ min: 1, max: 3 }),
     }
   },
