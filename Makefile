@@ -21,7 +21,7 @@ start-backend:
 	npm start -- --watch --verbose-watch --ignore-watch='node_modules .git .sqlite'
 
 start-frontend:
-	npx webpack
+  npx webpack --mode=$(if $(filter production,$(NODE_ENV)),production,development)
 
 lint:
 	npx eslint .
