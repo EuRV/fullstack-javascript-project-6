@@ -1,4 +1,4 @@
-setup: install db-migrate
+setup: prepare install db-migrate
 
 install:
 	npm install
@@ -8,6 +8,9 @@ build:
 
 migrate:
 	knex migrate:latest
+
+prepare:
+	cp -n .env.example .env || true
 
 start: start-frontend start-backend
 

@@ -1,13 +1,13 @@
 services:
 - type: web
   name: fastify
+  env: node
   runtime: node
   repo: https://github.com/EuRV/fullstack-javascript-project-6
   plan: free
   region: oregon
   buildCommand: make setup
   startCommand: make start
-  env: node
   envVars:
     - key: NODE_ENV
       value: production
