@@ -14,7 +14,7 @@ services:
   plan: free
   region: oregon
   buildCommand: make setup
-  startCommand: make start prod
+  startCommand: make start
   envVars:
     - key: NODE_ENV
       value: production

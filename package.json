@@ -5,17 +5,13 @@
   "main": "server/plugin.js",
   "type": "module",
   "engines": {
-    "node": "=18.20.8"
+    "node": "18.20.8"
   },
   "scripts": {
     "prebuild": "rm -rf dist",
-    "build": "webpack --mode=production",
+    "build": "webpack",
     "start": "fastify start server/plugin.js -l debug -P -o",
-    "start:prod": "fastify start server/plugin.js -l debug -P -o -p 10000 -a 0.0.0.0",
-    "dev": "fastify start server/plugin.js -l debug -P -o --watch --verbose-watch --ignore-watch='node_modules .git .sqlite'",
-    "test": "jest",
-    "webpack:dev": "webpack --mode=development --watch",
-    "webpack:prod": "webpack --mode=production"
+    "test": "jest"
   },
   "jest": {
     "modulePathIgnorePatterns": [
