@@ -11,6 +11,9 @@
     "prebuild": "rm -rf dist",
     "build": "webpack",
     "start": "fastify start server/plugin.js -l debug -P -o -p 3000",
+    "migrate": "knex migrate:latest",
+    "migrate:rollback": "knex migrate:rollback --all",
+    "postdeploy": "npm run migrate",
     "test": "jest"
   },
   "jest": {
