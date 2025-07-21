@@ -9,8 +9,9 @@
   },
   "scripts": {
     "prebuild": "rm -rf dist",
-    "build": "npx webpack --mode=production",
-    "start": "fastify start server/plugin.js -l debug -P -o -p 3000",
+    "build": "webpack --mode=production",
+    "start": "fastify start server/plugin.js -l info -P -o -p 3000",
+    "dev": "fastify start server/plugin.js -l debug -P -o -p 3000 --watch --verbose-watch --ignore-watch='node_modules .git .sqlite'",
 
     "dev:migrate": "knex migrate:latest --env=development",
     "dev:migrate:rollback": "knex migrate:rollback --env=development",
@@ -23,7 +24,9 @@
     "reset": "npm run migrate:rollback && npm run migrate",
 
     "postdeploy": "npm run migrate",
-    "test": "jest"
+    "test": "jest",
+    "test:coverage": "jest --coverage --coverageProvider=v8",
+    "lint": "eslint ."
   },
   "jest": {
     "modulePathIgnorePatterns": [

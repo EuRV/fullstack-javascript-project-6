@@ -1,32 +1,38 @@
+.PHONY: setup install build prepare start \
+        dev-migrate dev-rollback dev-reset \
+        prod-migrate prod-rollback prod-reset prod-deploy \
+        start-backend start-backend-prod start-frontend start-frontend-prod \
+        lint test test-coverage db-migrate db-reset
+
 setup: prepare install prod-deploy
 
 install:
-	npm install
+	npm ci
 
 build:
 	npm run build
 
-# Development окружение
-dev-migrate:  ## Применить миграции (development)
+# Development
+dev-migrate:
 	@npm run dev:migrate
 
-dev-rollback: ## Откатить последнюю миграцию (development)
+dev-rollback:
 	@npm run dev:migrate:rollback
 
-dev-reset:    ## Полный сброс БД: откат + миграции
+dev-reset:
 	@npm run dev:reset
 
-# Production окружение (для Render/Heroku)
-prod-migrate:  ## Применить миграции (production)
+# Production
+prod-migrate:
 	@npm run migrate
 
-prod-rollback: ## Откатить последнюю миграцию (production)
+prod-rollback:
 	@npm run migrate:rollback
 
-prod-reset:    ## Полный сброс БД в production (ОСТОРОЖНО!)
+prod-reset:
 	@npm run reset
 
-prod-deploy:   ## Полный деплой для Render.com
+prod-deploy:
 	@npm run postdeploy
 
 prepare:
@@ -37,26 +43,26 @@ start: start-frontend start-backend
 start-prod: build start-backend-prod
 
 start-backend:
-	npm start -- --watch --verbose-watch --ignore-watch='node_modules .git .sqlite'
+	npm run dev
 
 start-backend-prod:
 	npm start
 
 start-frontend:
-	npx webpack --mode=development
+	npx webpack --mode=development --watch
 
 start-frontend-prod:
 	npx webpack --mode=production
 
 lint:
-	npx eslint .
+	npm run lint
 
 test:
 	npm test
-	
-test-coverage:
-	npm test -- --coverage --coverageProvider=v8
 
-# Алиасы для удобства
-db-migrate: dev-migrate    ## Алиас для dev-migrate
-db-reset: dev-reset       ## Алиас для dev-reset
+test-coverage:
+	npm run test:coverage
+
+# Aliases
+db-migrate: dev-migrate
+db-reset: dev-reset
