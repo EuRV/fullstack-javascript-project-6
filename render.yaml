@@ -7,5 +7,9 @@ services:
   region: oregon
   buildCommand: make setup
   startCommand: make start
+  env: node
+  envVars:
+    - key: NODE_ENV
+      value: production
   autoDeployTrigger: "off"
 version: "1"
