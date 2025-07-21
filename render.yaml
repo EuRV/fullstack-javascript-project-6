@@ -11,5 +11,7 @@ services:
   envVars:
     - key: NODE_ENV
       value: production
+    - key: PG_CONNECTION_STRING
+      value: required
   autoDeployTrigger: "off"
 version: "1"
