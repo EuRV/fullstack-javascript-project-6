@@ -9,9 +9,13 @@
   },
   "scripts": {
     "prebuild": "rm -rf dist",
-    "build": "webpack",
+    "build": "webpack --mode=production",
     "start": "fastify start server/plugin.js -l debug -P -o",
-    "test": "jest"
+    "start:prod": "fastify start server/plugin.js -l debug -P -o -p 10000 -a 0.0.0.0",
+    "dev": "fastify start server/plugin.js -l debug -P -o --watch --verbose-watch --ignore-watch='node_modules .git .sqlite'",
+    "test": "jest",
+    "webpack:dev": "webpack --mode=development --watch",
+    "webpack:prod": "webpack --mode=production"
   },
   "jest": {
     "modulePathIgnorePatterns": [
