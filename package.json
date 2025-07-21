@@ -9,7 +9,7 @@
   },
   "scripts": {
     "prebuild": "rm -rf dist",
-    "build": "webpack",
+    "build": "npx webpack --mode=production",
     "start": "fastify start server/plugin.js -l debug -P -o -p 3000",
 
     "dev:migrate": "knex migrate:latest --env=development",

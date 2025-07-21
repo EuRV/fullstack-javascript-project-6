@@ -34,7 +34,7 @@ prepare:
 
 start: start-frontend start-backend
 
-start-prod: start-frontend-prod start-backend-prod
+start-prod: build start-backend-prod
 
 start-backend:
 	npm start -- --watch --verbose-watch --ignore-watch='node_modules .git .sqlite'
