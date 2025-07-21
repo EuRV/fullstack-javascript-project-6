@@ -1,3 +1,9 @@
+databases:
+  - name: my_postgres_db
+    plan: free
+    databaseName: myapp_db
+    user: myapp_user
+
 services:
 - type: web
   name: fastify
@@ -12,7 +18,9 @@ services:
   envVars:
     - key: NODE_ENV
       value: production
-    - key: PG_CONNECTION_STRING
-      value: required
+    - key: DATABASE_URL
+      fromDatabase:
+        name: my_postgres_db
+        property: connectionString
   autoDeployTrigger: "off"
 version: "1"
