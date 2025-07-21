@@ -9,7 +9,6 @@ services:
   name: fastify
   env: node
   runtime: node
-  nodeVersion: 18
   repo: https://github.com/EuRV/fullstack-javascript-project-6
   plan: free
   region: oregon
