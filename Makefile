@@ -1,4 +1,4 @@
-setup: prepare install migrate
+setup: prepare install migrate-prod
 
 install:
 	npm install
@@ -8,6 +8,9 @@ build:
 
 migrate:
 	knex migrate:latest
+
+migrate-prod:
+    NODE_ENV=production knex migrate:latest
 
 prepare:
 	cp -n .env.example .env || true
