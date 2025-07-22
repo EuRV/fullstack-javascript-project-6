@@ -13,6 +13,12 @@ export default (app) => {
       const label = new objectionModels.label();
       reply.render('labels/new', { label });
     })
+    .get('/labels/:id/edit', { name: 'labelUpdate', preValidation: app.authenticate }, async (request, reply) => {
+      const { id } = request.params;
+      const label = await objectionModels.label.query().findById(id);
+      reply.render('labels/edit', { label });
+      return reply;
+    })
     .post('/labels', { preValidation: app.authenticate }, async (request, reply) => {
       const label = new objectionModels.label();
       label.$set(request.body.data);
@@ -24,6 +30,21 @@ export default (app) => {
       } catch ({ data }) {
         request.flash('error', i18next.t('flash.labels.create.error'));
         reply.render('labels/new', { label, errors: data });
+      }
+      return reply;
+    })
+    .patch('/labels/:id', { preValidation: app.authenticate }, async (request, reply) => {
+      const { id } = request.params;
+      const label = await objectionModels.label.query().findById(id);
+      label.$set(request.body.data);
+      
+      try {
+        await label.$query().patch(request.body.data);
+        request.flash('info', i18next.t('flash.labels.update.success'));
+        reply.redirect('/labels');
+      } catch ({ data }) {
+        request.flash('error', i18next.t('flash.labels.update.error'));
+        reply.render('labels/edit', { label, errors: data });
       }
       return reply;
     });
