@@ -8,6 +8,23 @@ export default (app) => {
       const labels = await objectionModels.label.query();
       reply.render('labels/index', { labels });
       return reply;
-    },
-    );
+    })
+    .get('/labels/new', { preValidation: app.authenticate }, (request, reply) => {
+      const label = new objectionModels.label();
+      reply.render('labels/new', { label });
+    })
+    .post('/labels', { preValidation: app.authenticate }, async (request, reply) => {
+      const label = new objectionModels.label();
+      label.$set(request.body.data);
+
+      try {
+        await objectionModels.label.query().insert(request.body.data);
+        request.flash('info', i18next.t('flash.labels.create.success'));
+        reply.redirect('/labels');
+      } catch ({ data }) {
+        request.flash('error', i18next.t('flash.labels.create.error'));
+        reply.render('labels/new', { label, errors: data });
+      }
+      return reply;
+    });
 };
