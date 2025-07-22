@@ -10,8 +10,8 @@ services:
     env: node
     plan: free
     region: oregon
-    buildCommand: npm ci && npm install --only=dev && npm run build
-    startCommand: npm start
+    buildCommand: make setup
+    startCommand: make start-backend-prod
     envVars:
       - key: NODE_ENV
         value: production
