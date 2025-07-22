@@ -4,23 +4,16 @@
         start-backend start-backend-prod start-frontend start-frontend-prod \
         lint test test-coverage db-migrate db-reset
 
-setup: prepare install prod-deploy
+setup: prepare install build deploy
+
+prepare:
+	cp -n .env.example .env || true
 
 install:
-	npm ci
+	npm ci && npm install --only=dev
 
 build:
 	npm run build
-
-# Development
-dev-migrate:
-	@npm run dev:migrate
-
-dev-rollback:
-	@npm run dev:migrate:rollback
-
-dev-reset:
-	@npm run dev:reset
 
 # Production
 prod-migrate:
@@ -32,27 +25,45 @@ prod-rollback:
 prod-reset:
 	@npm run reset
 
-prod-deploy:
+deploy:
 	@npm run postdeploy
 
-prepare:
-	cp -n .env.example .env || true
-
-start: start-frontend start-backend
-
 start-prod: build start-backend-prod
-
-start-backend:
-	npm run dev
 
 start-backend-prod:
 	npm start
 
-start-frontend:
-	npx webpack --mode=development --watch
-
 start-frontend-prod:
 	npx webpack --mode=production
+
+# Development
+dev-migrate:
+	@npm run dev:migrate
+
+dev-rollback:
+	@npm run dev:rollback
+
+dev-reset:
+	@npm run dev:reset
+
+start-backend:
+	@echo "🔧 Starting backend server..."
+	@npm run dev:backend
+
+start-frontend:
+	@echo "🔧 Starting frontend watcher..."
+	@npm run dev:frontend
+
+start:
+	@echo "🚀 Starting frontend and backend..."
+	@bash -c '\
+		trap "kill 0" EXIT; \
+		echo "🔧 Starting frontend watcher..."; \
+		npm run dev:frontend & \
+		echo "🔧 Starting backend server..."; \
+		npm run dev:backend & \
+		wait \
+	'
 
 lint:
 	npm run lint
