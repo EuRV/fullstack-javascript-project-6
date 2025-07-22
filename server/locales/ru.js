@@ -63,6 +63,24 @@ export default {
         },
       },
     },
+    labels: {
+      index: {
+        title: 'Метки',
+        id: 'ID',
+        name: 'Наименование',
+        createdAt: 'Дата создания',
+        actions: 'Действия',
+        buttons: {
+          create: 'Создать метку',
+        },
+      },
+      new: {
+        title: 'Создание метки',
+      },
+      edit: {
+        title: 'Изменение метки',
+      },
+    },
     layouts: {
       application: {
         labels: 'Метки',
