@@ -4,7 +4,7 @@
         start-backend start-backend-prod start-frontend start-frontend-prod \
         lint test test-coverage db-migrate db-reset
 
-setup: prepare install build deploy
+setup: prepare install build migrate
 
 prepare:
 	cp -n .env.example .env || true
@@ -25,16 +25,16 @@ prod-rollback:
 prod-reset:
 	@npm run reset
 
-deploy:
-	@npm run postdeploy
+migrate:
+	npm run postdeploy
 
-start-prod: build start-backend-prod
+start-prod: start-backend-prod
 
 start-backend-prod:
-	npm start
+	@npm start
 
 start-frontend-prod:
-	npx webpack --mode=production
+	@npx webpack --mode=production
 
 # Development
 dev-migrate:
