@@ -20,6 +20,6 @@ block content
             td= label.name
             td= formatDate(label.createdAt)
             td
-              .d-flex.flex-wrap
-                a(href=`/statuses/${status.id}/edit`)= t('buttons.change')
-                +buttonTo(`/statuses/${status.id}`, 'delete')(class="btn btn-danger" value=t('buttons.delete'))
+              .d-flex
+                a.btn.btn-primary.me-1(href=`/labels/${label.id}/edit`)= t('buttons.change')
+                +buttonTo(`/labels/${label.id}`, 'delete')(class="btn btn-danger" value=t('buttons.delete'))
