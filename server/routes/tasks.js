@@ -14,12 +14,13 @@ export default (app) => {
     })
     .get('/tasks/new', { preValidation: app.authenticate }, async (request, reply) => {
       const task = new objectionModels.task();
-      const [executors, statuses] = await Promise.all([
+      const [executors, statuses, labels] = await Promise.all([
         objectionModels.user.query().modify('getFullName'),
-        objectionModels.status.query().modify('getShortData')
+        objectionModels.status.query().modify('getShortData'),
+        objectionModels.label.query().modify('getShortData')
       ]);
 
-      reply.render('tasks/new', { task, executors, statuses });
+      reply.render('tasks/new', { task, executors, statuses, labels });
       return reply;
     })
     .get('/tasks/:id', { preValidation: app.authenticate }, async (request, reply) => {
@@ -44,23 +45,39 @@ export default (app) => {
     })
     .post('/tasks', { preValidation: app.authenticate }, async (request, reply) => {
       const task = new objectionModels.task();
-      const dataTask = {
-        ...request.body.data,
+      const { labels: labelIds = [], ...dataTask } = {
         creatorId: request.session.get('passport').id,
+        ...request.body.data,
       };
-      task.$set(dataTask);
 
       try {
-        await objectionModels.task.query().insert(dataTask);
+        await objectionModels.task.transaction(async (trx) => {
+          const existingLabels = await objectionModels.label.query(trx).findByIds([...labelIds])
+            .then((labels) => labels.map(({ id }) => ({ id })));
+
+          if ([...labelIds].length !== existingLabels.length) {
+            const existingIds = existingLabels.map(l => l.id);
+            const missingIds = labelIds.filter(id => !existingIds.includes(id));
+            throw new Error(`Labels not found: ${missingIds.join(', ')}`);
+          }
+          await objectionModels.task.query(trx)
+            .upsertGraphAndFetch({ ...dataTask, labels: existingLabels}, {
+              relate: true,
+              unrelate: true,
+              noUpdate: ['labels']
+            });
+        });
         request.flash('info', i18next.t('flash.tasks.create.success'));
         reply.redirect('/tasks');
-      } catch ({ data }) {
+      } catch (error) {
+        console.error(error)
         request.flash('error', i18next.t('flash.tasks.create.error'));
-        const [executors, statuses] = await Promise.all([
+        const [executors, statuses, labels] = await Promise.all([
           objectionModels.user.query().modify('getFullName'),
-          objectionModels.status.query().modify('getShortData')
+          objectionModels.status.query().modify('getShortData'),
+          objectionModels.label.query().modify('getShortData')
         ]);
-        reply.render('tasks/new', { task, executors, statuses, errors: data });
+        reply.render('tasks/new', { task, executors, statuses, labels, errors: error.data });
       }
       return reply;
     })
