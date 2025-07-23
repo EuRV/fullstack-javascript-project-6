@@ -54,9 +54,40 @@ export default (app) => ({
     return false;
   },
 
+  find(collection, predicate, fromIndex = 0) {
+    if (Array.isArray(collection) || typeof collection === 'string') {
+      for (let i = fromIndex; i < collection.length; i++) {
+        if (predicate(collection[i], i, collection)) {
+          return collection[i];
+        }
+      }
+    }
+
+    else if (typeof collection === 'object' && collection !== null) {
+      const keys = Object.keys(collection);
+      for (let i = fromIndex; i < keys.length; i++) {
+        const key = keys[i];
+        if (predicate(collection[key], key, collection)) {
+          return collection[key];
+        }
+      }
+    }
+
+    return undefined;
+  },
+
   get(obj, key, defaultValue = undefined) {
     const result = obj[key] || defaultValue;
     return result;
+  },
+
+  convertPropertyName(property) {
+    const dict = {
+      status: 'statusId',
+      executor: 'executorId',
+      labels: 'labels',
+    };
+    return dict[property];
   },
 
   getAlertClass(type) {
