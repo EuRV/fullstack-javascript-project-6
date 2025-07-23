@@ -47,5 +47,19 @@ export default (app) => {
         reply.render('labels/edit', { label, errors: data });
       }
       return reply;
+    })
+    .delete('/labels/:id', { preValidation: app.authenticate }, async (request, reply) => {
+      const { id } = request.params;
+      const label = await objectionModels.label.query().findById(id);
+
+      try {
+        await label.$query().delete();
+        request.flash('info', i18next.t('flash.labels.delete.success'));
+        reply.redirect('/labels');
+      } catch (error) {
+        request.flash('error', i18next.t('flash.labels.delete.error'));
+        reply.redirect('/statuses');
+      }
+      return reply;
     });
 };
