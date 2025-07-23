@@ -183,6 +183,7 @@ export default {
       name: 'Наименование',
       password: 'Пароль',
       statusId: 'Статус',
+      labels: 'Метки',
     },
   },
 };
