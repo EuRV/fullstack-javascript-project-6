@@ -58,7 +58,7 @@ export default (app) => {
         reply.redirect('/labels');
       } catch (error) {
         request.flash('error', i18next.t('flash.labels.delete.error'));
-        reply.redirect('/statuses');
+        reply.redirect('/labels');
       }
       return reply;
     });
