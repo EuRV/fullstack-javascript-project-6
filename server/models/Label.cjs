@@ -41,4 +41,30 @@ module.exports = class Label extends BaseModel {
       this.updatedAt = new Date().toISOString();
     }
   }
+
+  static get relationMappings() {
+    return {
+      tasks: {
+        relation: BaseModel.ManyToManyRelation,
+        modelClass: 'Task.cjs',
+        join: {
+          from: 'labels.id',
+          through: {
+            from: 'tasks_labels.labelId',
+            to: 'tasks_labels.taskId',
+          },
+          to: 'tasks.id',
+        },
+      },
+    };
+  }
+
+  static modifiers = {
+    getShortData(query) {
+      query.select(
+        'id',
+        'name'
+      );
+    },
+  };
 };
