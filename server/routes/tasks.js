@@ -25,10 +25,12 @@ export default (app) => {
     })
     .get('/tasks/:id', { preValidation: app.authenticate }, async (request, reply) => {
       const { id } = request.params;
+
       const task = await objectionModels.task
         .query()
         .findById(id)
-        .withGraphJoined('[status(getShortData), executor(getFullName), creator(getFullName)]');
+        .withGraphJoined('[status(getShortData), executor(getFullName), creator(getFullName), labels(getShortData)]');
+
       reply.render('tasks/view', { task });
       return reply;
     })
