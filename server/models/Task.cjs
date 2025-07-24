@@ -51,6 +51,7 @@ module.exports = class Task extends BaseModel {
 
     const converted = {
       ...json,
+      ...(json.id !== undefined && { id: parseInt(json.id, 10) }),
       statusId: parseInt(json.statusId, 10),
       creatorId: parseInt(json.creatorId, 10),
       executorId: parseInt(json.executorId, 10) || null,
