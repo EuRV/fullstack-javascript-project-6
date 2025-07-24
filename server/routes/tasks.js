@@ -144,10 +144,14 @@ export default (app) => {
       }
 
       try {
-        await task.$query().delete();
+        await objectionModels.task.transaction(async (trx) => {
+          await task.$relatedQuery('labels', trx).unrelate();
+          await task.$query(trx).delete();
+        });
         request.flash('info', i18next.t('flash.tasks.delete.success'));
         reply.redirect('/tasks');
       } catch (error) {
+        console.error(error);
         request.flash('error', i18next.t('flash.tasks.delete.error'));
       }
       return reply;
