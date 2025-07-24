@@ -75,7 +75,7 @@ mixin inputSelectMultipleLabels(entity, propertyName, errors = {}, object)
       each item in entity
         option(
           value= item.id
-          selected= (find(object[propertyName], { id: item.id })) ? 'selected' : false 
+          selected= (object[propertyName] && object[propertyName].some(({ id }) => id === item.id)) ? 'selected' : false 
           )= item.name
     if !isEmpty(propertyErrors)
       .invalid-feedback= propertyErrors.map(({ message }) => message).join('. ')
