@@ -7,6 +7,7 @@ export default {
       delete: 'Удалить',
       login: 'Войти',
       save: 'Сохранить',
+      show: 'Показать',
     },
     flash: {
       authError: 'Доступ запрещён! Пожалуйста, авторизируйтесь.',
@@ -142,11 +143,13 @@ export default {
         title: 'Задачи',
         id: 'ID',
         taskName: 'Наименование',
-        statusName: 'Статус',
+        status: 'Статус',
         creator: 'Автор',
         executor: 'Исполнитель',
         createdAt: 'Дата создания',
         actions: 'Действия',
+        isCreatorUser: 'Только мои задачи',
+        label: 'Метка',
         buttons: {
           create: 'Создать задачу',
         },
