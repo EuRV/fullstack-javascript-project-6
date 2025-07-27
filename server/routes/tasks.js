@@ -5,11 +5,20 @@ export default (app) => {
 
   app
     .get('/tasks', { preValidation: app.authenticate }, async (request, reply) => {
+      const currentUserId = request.session.get('passport').id;
+      const { query } = request;
+      const filter = { ...query, creator: query.isCreatorUser ? currentUserId : '' };
+
       const tasks = await objectionModels.task
         .query()
-        .withGraphJoined('[status(getShortData), executor(getFullName), creator(getFullName)]');
+        .withGraphJoined('[status(getShortData), executor(getFullName), creator(getFullName), labels(getShortData)]')
+        .modify('filter', filter);
 
-      reply.render('tasks/index', { tasks });
+      const statuses = await objectionModels.status.query();
+      const users = await objectionModels.user.query();
+      const labels = await objectionModels.label.query();
+
+      reply.render('tasks/index', { tasks, statuses, users, labels, form: query });
       return reply;
     })
     .get('/tasks/new', { preValidation: app.authenticate }, async (request, reply) => {
