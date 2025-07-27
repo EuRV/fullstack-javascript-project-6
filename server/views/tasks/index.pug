@@ -5,13 +5,44 @@ block header
 
 block content
   a.btn.btn-primary.mb-5(href='/tasks/new')= t('tasks.index.buttons.create')
+
+  .card.shadow-sm
+    .card-body.p-4
+        +formFor()(action=`/tasks` method='get')
+          .row
+            .col-12.col-md
+              .input-group.mb-3
+                label.input-group-text(for='data_status')=t('tasks.index.status')
+                select.form-select(id='data_status' name='status')
+                  option
+                  each status in statuses
+                    option(value=status.id, selected=(form.status.includes(status.id)))= status.name
+            .col-12.col-md
+              .input-group.mb-3
+                label.input-group-text(for='data_executor')=t('tasks.index.executor')
+                select.form-select(id='data_executor' name='executor')
+                  option
+                  each user in users
+                    option(value=user.id, selected=(form.executor.includes(user.id)))= `${user.firstName} ${user.lastName}`
+            .col-12.col-md
+              .input-group.mb-3
+                label.input-group-text(for='data_label')=t('tasks.index.label')
+                select.form-select(id='data_label' name='label')
+                  option
+                  each label in labels
+                    option(value=label.id, selected=(form.label.includes(label.id)))= label.name
+          .mb-3.form-check
+            input.form-check-input(type='checkbox' id='data_isCreatorUser' name='isCreatorUser', checked=form.isCreatorUser)
+            label.form-check-label(for='data_isCreatorUser')= t('tasks.index.isCreatorUser')
+          +submit(task)(value=t('buttons.show'))
+
   .table-responsive
     table.table.table-borderless.table-striped.mt-5.bg-white
       thead
         tr
           th= t('tasks.index.id')
           th= t('tasks.index.taskName')
-          th= t('tasks.index.statusName')
+          th= t('tasks.index.status')
           th= t('tasks.index.creator')
           th= t('tasks.index.executor')
           th= t('tasks.index.createdAt')
