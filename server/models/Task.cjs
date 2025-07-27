@@ -60,6 +60,19 @@ module.exports = class Task extends BaseModel {
     return converted;
   }
 
+  static modifiers = {
+    async filter(query, filterParams = {}) {
+      const { status, executor, label, creator } = filterParams;
+
+      query
+        .skipUndefined()
+        .where('statusId', status || undefined)
+        .andWhere('executorId', executor || undefined)
+        .andWhere('labels.id', label || undefined)
+        .andWhere('creatorId', creator || undefined);
+    },
+  };
+
   static relationMappings = {
     creator: {
       relation: BaseModel.BelongsToOneRelation,
