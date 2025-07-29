@@ -54,6 +54,7 @@ export default (app) => {
         request.flash('info', i18next.t('flash.users.delete.success'));
         reply.redirect('/users');
       } catch (error) {
+        console.error(error);
         request.flash('error', i18next.t('flash.users.delete.error'));
         reply.redirect('/users');
       }

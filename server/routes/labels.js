@@ -37,7 +37,7 @@ export default (app) => {
       const { id } = request.params;
       const label = await objectionModels.label.query().findById(id);
       label.$set(request.body.data);
-      
+
       try {
         await label.$query().patch(request.body.data);
         request.flash('info', i18next.t('flash.labels.update.success'));
@@ -57,6 +57,7 @@ export default (app) => {
         request.flash('info', i18next.t('flash.labels.delete.success'));
         reply.redirect('/labels');
       } catch (error) {
+        console.error(error);
         request.flash('error', i18next.t('flash.labels.delete.error'));
         reply.redirect('/labels');
       }
