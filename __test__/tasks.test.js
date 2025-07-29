@@ -149,7 +149,7 @@ describe('Tasks Routes CRUD operations', () => {
         url: `/tasks/${task.id}`,
         payload: {
           data: params,
-        }, 
+        },
         cookies: authCookie,
       });
 

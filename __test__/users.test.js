@@ -50,7 +50,7 @@ describe('User Routes CRUD operations', () => {
 
     it('should throw validation error for invalid data', async () => {
       const params = createRandomUser.new();
-      const invalidParams = { ...params, firstName: '' }
+      const invalidParams = { ...params, firstName: '' };
       const response = await app.inject({
         method: 'POST',
         url: '/users',
@@ -218,7 +218,7 @@ describe('User Routes CRUD operations', () => {
 
       const usersAfterDeletion = await models.user.query();
       expect(response.statusCode).toBe(302);
-      expect(usersAfterDeletion.length).toEqual(usersBeforeDeletion.length)
+      expect(usersAfterDeletion.length).toEqual(usersBeforeDeletion.length);
     });
   });
 
