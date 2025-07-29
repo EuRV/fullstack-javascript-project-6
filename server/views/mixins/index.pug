@@ -40,7 +40,7 @@ mixin inputTextarea(entity, propertyName, errors = {})
     if !isEmpty(propertyErrors)
       .invalid-feedback= propertyErrors.map(({ message }) => message).join('. ')
 
-mixin inputSelect(entity, propertyName, errors = {}, object)
+mixin inputSelect(entities, propertyName, errors = {}, object)
   - propertyErrors = get(errors, propertyName)
   - inputId = getInputId(propertyName)
   - classLine = 'form-control' + (isEmpty(propertyErrors) ? '' : ' is-invalid')
@@ -52,15 +52,15 @@ mixin inputSelect(entity, propertyName, errors = {}, object)
       class=classLine
       )
       option
-      each item in entity
+      each entity in entities
         option(
-          value= item.id
-          selected= (Number(object[propertyName]) === Number(item.id)) ? 'selected' : false 
-          )= item.name || item.fullName
+          value= entity.id
+          selected= (Number(object[propertyName]) === Number(entity.id)) ? 'selected' : false 
+          )= entity.name || entity.fullName
     if !isEmpty(propertyErrors)
       .invalid-feedback= propertyErrors.map(({ message }) => message).join('. ')
 
-mixin inputSelectMultipleLabels(entity, propertyName, errors = {}, object)
+mixin inputSelectMultipleLabels(entities, propertyName, errors = {}, object)
   - propertyErrors = get(errors, convertPropertyName(propertyName))
   - inputId = getInputId(propertyName)
   - classLine = 'form-select' + (isEmpty(propertyErrors) ? '' : ' is-invalid')
@@ -72,13 +72,32 @@ mixin inputSelectMultipleLabels(entity, propertyName, errors = {}, object)
       class=classLine
       multiple='multiple'
       )
-      each item in entity
+      each entity in entities
         option(
-          value= item.id
-          selected= (object[propertyName] && object[propertyName].some(({ id }) => id === item.id)) ? 'selected' : false 
-          )= item.name
+          value= entity.id
+          selected= (object[propertyName] && object[propertyName].some(({ id }) => id === entity.id)) ? 'selected' : false 
+          )= entity.name
     if !isEmpty(propertyErrors)
       .invalid-feedback= propertyErrors.map(({ message }) => message).join('. ')
+
+mixin inputSelectFilter(entities, propertyName, options)
+  - inputId = getInputId(propertyName)
+
+  label.input-group-text(for=inputId)= t(`tasks.index.${propertyName}`)
+  select.form-select(id=inputId name=propertyName)
+    option
+    each entity in entities
+      - isSelected = options[propertyName]?.includes(entity.id) ?? false
+      option(value=entity.id, selected=isSelected)= entity.name || entity.fullName
+
+mixin inputCheckbox(propertyName, options)
+  - inputId = getInputId(propertyName)
+  - isChecked = options[propertyName]
+  - console.log(propertyName, options)
+
+  .mb-3.form-check
+    input.form-check-input(type='checkbox' id=inputId name=propertyName checked=isChecked)
+    label.form-check-label(for=inputId)= t(`tasks.index.${propertyName}`)
 
 mixin submit(form = null)
   input(class='btn btn-primary' type='submit')&attributes(attributes)
