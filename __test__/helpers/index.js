@@ -2,9 +2,8 @@ import { URL } from 'url';
 import fs from 'fs';
 import path from 'path';
 import { faker } from '@faker-js/faker';
-import passport from '@fastify/passport';
 
-import hashPassword from '../../server/lib/secure.cjs'
+import hashPassword from '../../server/lib/secure.cjs';
 
 const getFixturePath = (filename) => path.join('..', '..', '__fixtures__', filename);
 const readFixture = (filename) => fs.readFileSync(new URL(getFixturePath(filename), import.meta.url), 'utf-8').trim();
@@ -29,14 +28,14 @@ export const createRandomUser = {
       lastName: faker.person.lastName(),
       email: faker.internet.email(),
       password: faker.internet.password(),
-    }
+    };
   },
   update() {
     return {
       firstName: faker.person.firstName(),
       lastName: faker.person.lastName(),
       password: faker.internet.password(),
-    }
+    };
   },
   prepare() {
     return {
@@ -44,7 +43,7 @@ export const createRandomUser = {
       lastName: faker.person.lastName(),
       email: faker.internet.email(),
       passwordDigest: hashPassword(faker.internet.password()),
-    }
+    };
   },
 };
 
@@ -55,7 +54,7 @@ export const createRandomTask = {
       description: faker.lorem.paragraph(),
       statusId: faker.number.int({ min: 1, max: 3 }),
       executorId: faker.number.int({ min: 1, max: 3 }),
-    }
+    };
   },
   invalid() {
     return {
@@ -63,7 +62,7 @@ export const createRandomTask = {
       description: faker.lorem.paragraph(),
       statusId: faker.number.int({ min: 1, max: 3 }),
       executorId: faker.number.int({ min: 1, max: 3 }),
-    }
+    };
   },
   prepare() {
     return {
@@ -72,7 +71,7 @@ export const createRandomTask = {
       statusId: faker.number.int({ min: 1, max: 3 }),
       creatorId: 2,
       executorId: faker.number.int({ min: 1, max: 3 }),
-    }
+    };
   },
 };
 
@@ -80,8 +79,8 @@ export const prepareData = async (app) => {
   const { knex } = app.objection;
 
   await knex('users').insert(getFixtureData('users.json'));
-  await knex('statuses').insert(Array.from({length: 3}, createRandomStatus));
-  await knex('tasks').insert(Array.from({length: 1}, createRandomTask.prepare));
+  await knex('statuses').insert(Array.from({ length: 3 }, createRandomStatus));
+  await knex('tasks').insert(Array.from({ length: 1 }, createRandomTask.prepare));
 };
 
 export const signInUser = async (app) => {
