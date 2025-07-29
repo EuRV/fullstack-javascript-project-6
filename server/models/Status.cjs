@@ -35,10 +35,10 @@ module.exports = class Status extends unique(BaseModel) {
 
     const { old } = opt;
 
-    const changedFields = Object.keys(this).filter(key =>
-      key !== 'updatedAt' &&
-      this[key] !== old[key] &&
-      key[0] !== '$'
+    const changedFields = Object.keys(this).filter((key) =>
+      key !== 'updatedAt'
+      && this[key] !== old[key]
+      && key[0] !== '$'
     );
 
     if (changedFields.length > 0) {

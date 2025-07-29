@@ -35,10 +35,10 @@ module.exports = class Task extends BaseModel {
 
     const { old } = opt;
 
-    const changedFields = Object.keys(this).filter(key =>
-      key !== 'updated_at' &&
-      this[key] !== old[key] &&
-      key[0] !== '$'
+    const changedFields = Object.keys(this).filter((key) =>
+      key !== 'updated_at'
+      && this[key] !== old[key]
+      && key[0] !== '$'
     );
 
     if (changedFields.length > 0) {
