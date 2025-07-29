@@ -14,11 +14,13 @@ export default (app) => {
         .withGraphJoined('[status(getShortData), executor(getFullName), creator(getFullName), labels(getShortData)]')
         .modify('filter', filter);
 
-      const statuses = await objectionModels.status.query();
-      const users = await objectionModels.user.query();
-      const labels = await objectionModels.label.query();
+      const [executors, statuses, labels] = await Promise.all([
+        objectionModels.user.query().modify('getFullName'),
+        objectionModels.status.query().modify('getShortData'),
+        objectionModels.label.query().modify('getShortData')
+      ]);
 
-      reply.render('tasks/index', { tasks, statuses, users, labels, form: query });
+      reply.render('tasks/index', { tasks, statuses, executors, labels, filterOptions: query });
       return reply;
     })
     .get('/tasks/new', { preValidation: app.authenticate }, async (request, reply) => {
@@ -71,28 +73,27 @@ export default (app) => {
             .then((labels) => labels.map(({ id }) => ({ id })));
 
           if ([...labelIds].length !== existingLabels.length) {
-            const existingIds = existingLabels.map(l => l.id);
-            const missingIds = labelIds.filter(id => !existingIds.includes(id));
+            const existingIds = existingLabels.map(({ id }) => id);
+            const missingIds = labelIds.filter((id) => !existingIds.includes(id));
             throw new Error(`Labels not found: ${missingIds.join(', ')}`);
           }
           await objectionModels.task.query(trx)
-            .upsertGraphAndFetch({ ...dataTask, labels: existingLabels}, {
+            .upsertGraphAndFetch({ ...dataTask, labels: existingLabels }, {
               relate: true,
               unrelate: true,
-              noUpdate: ['labels']
+              noUpdate: ['labels'],
             });
         });
         request.flash('info', i18next.t('flash.tasks.create.success'));
         reply.redirect('/tasks');
-      } catch (error) {
-        console.error(error)
+      } catch ({ data }) {
         request.flash('error', i18next.t('flash.tasks.create.error'));
         const [executors, statuses, labels] = await Promise.all([
           objectionModels.user.query().modify('getFullName'),
           objectionModels.status.query().modify('getShortData'),
           objectionModels.label.query().modify('getShortData')
         ]);
-        reply.render('tasks/new', { task, executors, statuses, labels, errors: error.data });
+        reply.render('tasks/new', { task, executors, statuses, labels, errors: data });
       }
       return reply;
     })
@@ -115,21 +116,20 @@ export default (app) => {
             .then((labels) => labels.map(({ id }) => ({ id })));
 
           if ([...labelIds].length !== existingLabels.length) {
-            const existingIds = existingLabels.map(l => l.id);
-            const missingIds = labelIds.filter(id => !existingIds.includes(id));
+            const existingIds = existingLabels.map(({ id }) => id);
+            const missingIds = labelIds.filter((id) => !existingIds.includes(id));
             throw new Error(`Labels not found: ${missingIds.join(', ')}`);
           }
           await objectionModels.task.query(trx)
-            .upsertGraphAndFetch({ ...dataTask, labels: existingLabels}, {
+            .upsertGraphAndFetch({ ...dataTask, labels: existingLabels }, {
               relate: true,
               unrelate: true,
-              noUpdate: ['labels']
+              noUpdate: ['labels'],
             });
         });
         request.flash('info', i18next.t('flash.tasks.update.success'));
         reply.redirect('/tasks');
-      } catch (error) {
-        console.error(error)
+      } catch ({ data }) {
         request.flash('error', i18next.t('flash.tasks.update.error'));
         task.$set({ ...dataTask, labels: [...labelIds].map((id) => ({ id: parseInt(id, 10) })) });
         const [executors, statuses, labels] = await Promise.all([
@@ -137,7 +137,7 @@ export default (app) => {
           objectionModels.status.query().modify('getShortData'),
           objectionModels.label.query().modify('getShortData')
         ]);
-        reply.render('tasks/edit', { task, executors, statuses, labels, errors: error.data });
+        reply.render('tasks/edit', { task, executors, statuses, labels, errors: data });
       }
       return reply;
     })
