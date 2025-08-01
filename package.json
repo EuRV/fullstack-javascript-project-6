@@ -24,7 +24,7 @@
     "dev:seed": "knex seed:run --env=development",
     "dev:reset": "npm run dev:rollback && npm run dev:migrate",
 
-    "test": "jest",
+    "test": "jest --verbose --runInBand",
     "test:coverage": "jest --coverage --coverageProvider=v8",
     "lint": "eslint ."
   },
