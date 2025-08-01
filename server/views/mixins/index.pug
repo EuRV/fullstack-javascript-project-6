@@ -93,7 +93,6 @@ mixin inputSelectFilter(entities, propertyName, options)
 mixin inputCheckbox(propertyName, options)
   - inputId = getInputId(propertyName)
   - isChecked = options[propertyName]
-  - console.log(propertyName, options)
 
   .mb-3.form-check
     input.form-check-input(type='checkbox' id=inputId name=propertyName checked=isChecked)
