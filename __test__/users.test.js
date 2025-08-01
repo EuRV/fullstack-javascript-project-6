@@ -15,7 +15,7 @@ describe('User Routes CRUD operations', () => {
   beforeAll(async () => {
     app = fastify({
       exposeHeadRoutes: false,
-      logger: { transport: { target: 'pino-pretty' } },
+      logger: false // как вариант logger: { transport: { target: 'pino-pretty' } },
     });
     await init(app);
     knex = app.objection.knex;
