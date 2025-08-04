@@ -17,7 +17,7 @@ export const prepareUsersData = async (app) => {
   await knex('users').insert(getFixtureData('users.json'));
 };
 
-export const createRandomStatus = () => ({
+export const createRandomName = () => ({
   name: faker.word.adjective(),
 });
 
@@ -79,8 +79,9 @@ export const prepareData = async (app) => {
   const { knex } = app.objection;
 
   await knex('users').insert(getFixtureData('users.json'));
-  await knex('statuses').insert(Array.from({ length: 3 }, createRandomStatus));
+  await knex('statuses').insert(Array.from({ length: 3 }, createRandomName));
   await knex('tasks').insert(Array.from({ length: 1 }, createRandomTask.prepare));
+  await knex('labels').insert(Array.from({ length: 3 }, createRandomName));
 };
 
 export const signInUser = async (app) => {
@@ -103,6 +104,7 @@ export const truncateTables = async (knex) => {
   await Promise.all([
     knex('users').truncate(),
     knex('statuses').truncate(),
-    knex('tasks').truncate()
+    knex('tasks').truncate(),
+    knex('labels').truncate()
   ]);
 };
