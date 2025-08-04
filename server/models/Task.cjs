@@ -32,18 +32,7 @@ module.exports = class Task extends BaseModel {
 
   async $beforeUpdate(opt, queryContext) {
     await super.$beforeUpdate(opt, queryContext);
-
-    const { old } = opt;
-
-    const changedFields = Object.keys(this).filter((key) =>
-      key !== 'updated_at'
-      && this[key] !== old[key]
-      && key[0] !== '$'
-    );
-
-    if (changedFields.length > 0) {
-      this.updated_at = new Date().toISOString();
-    }
+    this.updatedAt = new Date().toISOString();
   }
 
   $parseJson(json, opt) {
