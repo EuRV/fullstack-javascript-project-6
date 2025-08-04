@@ -2,7 +2,7 @@ import { fastify } from 'fastify';
 
 import init from '../server/plugin.js';
 import {
-  createRandomStatus, signInUser, truncateTables
+  createRandomName as createRandomStatus, signInUser, truncateTables
 } from './helpers/index.js';
 
 describe('Status Routes CRUD operations', () => {
@@ -148,8 +148,8 @@ describe('Status Routes CRUD operations', () => {
 
       const authCookie = await signInUser(app);
       const response = await app.inject({
-        method: 'POST',
-        url: '/statuses',
+        method: 'PATCH',
+        url: `/statuses/${id}`,
         payload: {
           data: updatedData,
         },
