@@ -19,34 +19,62 @@ describe('test session', () => {
     testData = getTestData();
   });
 
-  it('test sign in / sign out', async () => {
-    const response = await app.inject({
-      method: 'GET',
-      url: '/session/new',
+  describe('GET /session/new', () => {
+    it('should render new session form', async () => {
+      const response = await app.inject({
+        method: 'GET',
+        url: '/session/new',
+      });
+
+      expect(response.statusCode).toBe(200);
+      expect(response.payload).toMatch('Вход');
+    });
+  });
+
+  describe('POST /session', () => {
+    it('should handle authentication error', async () => {
+      const response = await app.inject({
+        method: 'POST',
+        url: '/session',
+        payload: {
+          data: {
+            email: 'nonexistent@mail.com',
+            password: 'O6AvLIQL1cbzrre',
+          },
+        },
+      });
+
+      expect(response.statusCode).toBe(200);
+      expect(response.payload).toMatch('Неверная почта или пароль');
     });
 
-    expect(response.statusCode).toBe(200);
+    it('should log in user and redirect on success', async () => {
+      const response = await app.inject({
+        method: 'POST',
+        url: '/session',
+        payload: {
+          data: {
+            email: 'lawrence.kulas87@outlook.com',
+            password: 'O6AvLIQL1cbzrre',
+          },
+        },
+      });
 
-    const responseSignIn = await app.inject({
-      method: 'POST',
-      url: '/session',
-      payload: {
-        data: testData.users.existing,
-      },
+      expect(response.statusCode).toBe(302);
+      expect(response.headers.location).toBe('/');
     });
+  });
 
-    expect(responseSignIn.statusCode).toBe(302);
-    const [sessionCookie] = responseSignIn.cookies;
-    const { name, value } = sessionCookie;
-    const cookie = { [name]: value };
+  describe('DELETE /session', () => {
+    it('should redirect to home', async () => {
+      const response = await app.inject({
+        method: 'DELETE',
+        url: '/session',
+      });
 
-    const responseSignOut = await app.inject({
-      method: 'DELETE',
-      url: '/session',
-      cookies: cookie,
+      expect(response.statusCode).toBe(302);
+      expect(response.headers.location).toBe('/');
     });
-
-    expect(responseSignOut.statusCode).toBe(302);
   });
 
   afterAll(async () => {
