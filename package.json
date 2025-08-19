@@ -10,7 +10,7 @@
   "scripts": {
     "prebuild": "rm -rf dist",
     "build": "webpack --mode=production",
-    "start": "fastify start server/plugin.js -l info -P -o -p 3000",
+    "start": "fastify start server/plugin.js -l info -P -o",
     "migrate": "knex migrate:latest --env=production",
     "migrate:rollback": "knex migrate:rollback --env=production",
     "seed": "knex seed:run --env=production",
