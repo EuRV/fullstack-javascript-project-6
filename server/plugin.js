@@ -11,6 +11,7 @@ import fastifyObjectionjs from 'fastify-objectionjs';
 import qs from 'qs';
 import Pug from 'pug';
 import i18next from 'i18next';
+import Rollbar from 'rollbar';
 
 import ru from './locales/ru.js';
 import addRoutes from './routes/index.js';
@@ -114,6 +115,16 @@ const registerPlugins = async (app) => {
 };
 
 export default async (app, _opts) => {
+  // include and initialize the rollbar library with your access token
+  var rollbar = new Rollbar({
+    accessToken: '14d0e309ff81468d90638483838dea60',
+    captureUncaught: true,
+    captureUnhandledRejections: true,
+  });
+
+  // record a generic message and send it to Rollbar
+  rollbar.log('Hello world!');
+
   await registerPlugins(app);
   await setupLocalization();
   setUpViews(app);
