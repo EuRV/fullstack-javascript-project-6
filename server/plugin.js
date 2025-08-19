@@ -117,9 +117,10 @@ const registerPlugins = async (app) => {
 export default async (app, _opts) => {
   // include and initialize the rollbar library with your access token
   var rollbar = new Rollbar({
-    accessToken: '14d0e309ff81468d90638483838dea60',
+    accessToken: process.env.ROLLBAR_ACCESS_TOKEN,
     captureUncaught: true,
     captureUnhandledRejections: true,
+    environment: mode,
   });
 
   // record a generic message and send it to Rollbar
