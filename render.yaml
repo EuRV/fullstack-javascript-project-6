@@ -21,7 +21,7 @@ services:
         fromDatabase:
           name: my_postgres_db
           property: connectionString
-    healthCheckPath: /health
+    # healthCheckPath: /health
     autoDeploy: false
 
 version: "1"
