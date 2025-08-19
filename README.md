@@ -1,2 +1,3 @@
 ### Hexlet tests and linter status:
 [![Actions Status](https://github.com/EuRV/fullstack-javascript-project-6/actions/workflows/hexlet-check.yml/badge.svg)](https://github.com/EuRV/fullstack-javascript-project-6/actions)
+[![Quality Gate Status](https://sonarcloud.io/api/project_badges/measure?project=EuRV_fullstack-javascript-project-6&metric=alert_status)](https://sonarcloud.io/summary/new_code?id=EuRV_fullstack-javascript-project-6)
