@@ -125,7 +125,7 @@ export default (app) => {
 
           if ([...labelIds].length !== existingLabels.length) {
             const existingIds = existingLabels.map(({ id: existingId }) => existingId);
-            const missingIds = labelIds.filter((id) => !existingIds.includes(id));
+            const missingIds = labelIds.filter((labelId) => !existingIds.includes(labelId));
             throw new Error(`Labels not found: ${missingIds.join(', ')}`);
           }
           await objectionModels.task.query(trx)
@@ -139,7 +139,10 @@ export default (app) => {
         reply.redirect('/tasks');
       } catch ({ data }) {
         request.flash('error', i18next.t('flash.tasks.update.error'));
-        task.$set({ ...dataTask, labels: [...labelIds].map((labelId) => ({ id: parseInt(labelId, 10) })) });
+        task.$set({ 
+          ...dataTask, 
+          labels: [...labelIds].map((labelId) => ({ id: parseInt(labelId, 10) })),
+        });
         const [executors, statuses, labels] = await Promise.all([
           objectionModels.user.query().modify('getFullName'),
           objectionModels.status.query().modify('getShortData'),
