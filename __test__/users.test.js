@@ -4,7 +4,7 @@ import { fastify } from 'fastify';
 import init from '../server/plugin.js';
 import hashPassword from '../server/lib/secure.cjs';
 import {
-  createRandomUser, signInUser, truncateTables
+  createRandomUser, signInUser, truncateTables,
 } from './helpers/index.js';
 
 describe('User Routes CRUD operations', () => {
@@ -15,7 +15,7 @@ describe('User Routes CRUD operations', () => {
   beforeAll(async () => {
     app = fastify({
       exposeHeadRoutes: false,
-      logger: false // как вариант logger: { transport: { target: 'pino-pretty' } },
+      logger: false, // как вариант logger: { transport: { target: 'pino-pretty' } },
     });
     await init(app);
     knex = app.objection.knex;

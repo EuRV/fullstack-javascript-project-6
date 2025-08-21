@@ -105,6 +105,6 @@ export const truncateTables = async (knex) => {
     knex('users').truncate(),
     knex('statuses').truncate(),
     knex('tasks').truncate(),
-    knex('labels').truncate()
+    knex('labels').truncate(),
   ]);
 };
