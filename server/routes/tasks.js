@@ -58,10 +58,12 @@ export default (app) => {
       const [executors, statuses, labels] = await Promise.all([
         objectionModels.user.query().modify('getFullName'),
         objectionModels.status.query().modify('getShortData'),
-        objectionModels.label.query().modify('getShortData')
+        objectionModels.label.query().modify('getShortData'),
       ]);
 
-      reply.render('tasks/edit', { task, executors, statuses, labels });
+      reply.render('tasks/edit', {
+        task, executors, statuses, labels,
+      });
       return reply;
     })
     .post('/tasks', { preValidation: app.authenticate }, async (request, reply) => {
@@ -95,9 +97,11 @@ export default (app) => {
         const [executors, statuses, labels] = await Promise.all([
           objectionModels.user.query().modify('getFullName'),
           objectionModels.status.query().modify('getShortData'),
-          objectionModels.label.query().modify('getShortData')
+          objectionModels.label.query().modify('getShortData'),
         ]);
-        reply.render('tasks/new', { task, executors, statuses, labels, errors: data });
+        reply.render('tasks/new', {
+          task, executors, statuses, labels, errors: data,
+        });
       }
       return reply;
     })
@@ -117,10 +121,10 @@ export default (app) => {
       try {
         await objectionModels.task.transaction(async (trx) => {
           const existingLabels = await objectionModels.label.query(trx).findByIds([...labelIds])
-            .then((labels) => labels.map(({ id }) => ({ id })));
+            .then((labels) => labels.map(({ id: labelId }) => ({ id: labelId })));
 
           if ([...labelIds].length !== existingLabels.length) {
-            const existingIds = existingLabels.map(({ id }) => id);
+            const existingIds = existingLabels.map(({ id: existingId }) => existingId);
             const missingIds = labelIds.filter((id) => !existingIds.includes(id));
             throw new Error(`Labels not found: ${missingIds.join(', ')}`);
           }
@@ -135,13 +139,15 @@ export default (app) => {
         reply.redirect('/tasks');
       } catch ({ data }) {
         request.flash('error', i18next.t('flash.tasks.update.error'));
-        task.$set({ ...dataTask, labels: [...labelIds].map((id) => ({ id: parseInt(id, 10) })) });
+        task.$set({ ...dataTask, labels: [...labelIds].map((labelId) => ({ id: parseInt(labelId, 10) })) });
         const [executors, statuses, labels] = await Promise.all([
           objectionModels.user.query().modify('getFullName'),
           objectionModels.status.query().modify('getShortData'),
-          objectionModels.label.query().modify('getShortData')
+          objectionModels.label.query().modify('getShortData'),
         ]);
-        reply.render('tasks/edit', { task, executors, statuses, labels, errors: data });
+        reply.render('tasks/edit', {
+          task, executors, statuses, labels, errors: data,
+        });
       }
       return reply;
     })
