@@ -83,7 +83,7 @@ const registerPlugins = async (app) => {
   });
 
   fastifyPassport.registerUserDeserializer(
-    (user) => app.objection.models.user.query().findById(user.id)
+    (user) => app.objection.models.user.query().findById(user.id),
   );
   fastifyPassport.registerUserSerializer((user) => Promise.resolve(user));
   fastifyPassport.use(new FormStrategy('form', app));
@@ -95,7 +95,7 @@ const registerPlugins = async (app) => {
     {
       failureRedirect: '/',
       failureFlash: i18next.t('flash.authError'),
-    }
+    },
   )(...args));
 
   await app.decorate('requireCurrentUser', (req, reply, done) => {
@@ -114,9 +114,8 @@ const registerPlugins = async (app) => {
   });
 };
 
-export default async (app, _opts) => {
+export default async (app) => {
   if (process.env.NODE_ENV !== 'test' && process.env.ROLLBAR_ACCESS_TOKEN) {
-    const Rollbar = require('rollbar');
     const rollbar = new Rollbar({
       accessToken: process.env.ROLLBAR_ACCESS_TOKEN,
       captureUncaught: true,

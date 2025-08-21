@@ -1,6 +1,6 @@
 import i18next from 'i18next';
 
-export default (app) => ({
+export default () => ({
   t(key) {
     return i18next.t(key);
   },

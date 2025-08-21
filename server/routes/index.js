@@ -11,7 +11,7 @@ const controllers = [
   session,
   statuses,
   tasks,
-  labels
+  labels,
 ];
 
 export default (app) => controllers.forEach((f) => f(app));

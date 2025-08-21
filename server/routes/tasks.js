@@ -17,10 +17,12 @@ export default (app) => {
       const [executors, statuses, labels] = await Promise.all([
         objectionModels.user.query().modify('getFullName'),
         objectionModels.status.query().modify('getShortData'),
-        objectionModels.label.query().modify('getShortData')
+        objectionModels.label.query().modify('getShortData'),
       ]);
 
-      reply.render('tasks/index', { tasks, statuses, executors, labels, filterOptions: query });
+      reply.render('tasks/index', {
+        tasks, statuses, executors, labels, filterOptions: query,
+      });
       return reply;
     })
     .get('/tasks/new', { preValidation: app.authenticate }, async (request, reply) => {
@@ -28,10 +30,12 @@ export default (app) => {
       const [executors, statuses, labels] = await Promise.all([
         objectionModels.user.query().modify('getFullName'),
         objectionModels.status.query().modify('getShortData'),
-        objectionModels.label.query().modify('getShortData')
+        objectionModels.label.query().modify('getShortData'),
       ]);
 
-      reply.render('tasks/new', { task, executors, statuses, labels });
+      reply.render('tasks/new', {
+        task, executors, statuses, labels,
+      });
       return reply;
     })
     .get('/tasks/:id', { preValidation: app.authenticate }, async (request, reply) => {
