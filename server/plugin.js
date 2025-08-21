@@ -115,16 +115,16 @@ const registerPlugins = async (app) => {
 };
 
 export default async (app, _opts) => {
-  // include and initialize the rollbar library with your access token
-  var rollbar = new Rollbar({
-    accessToken: process.env.ROLLBAR_ACCESS_TOKEN,
-    captureUncaught: true,
-    captureUnhandledRejections: true,
-    environment: mode,
-  });
-
-  // record a generic message and send it to Rollbar
-  rollbar.log('Hello world!');
+  if (process.env.NODE_ENV !== 'test' && process.env.ROLLBAR_ACCESS_TOKEN) {
+    const Rollbar = require('rollbar');
+    const rollbar = new Rollbar({
+      accessToken: process.env.ROLLBAR_ACCESS_TOKEN,
+      captureUncaught: true,
+      captureUnhandledRejections: true,
+      environment: mode,
+    });
+    rollbar.log('Hello world!');
+  }
 
   await registerPlugins(app);
   await setupLocalization();
