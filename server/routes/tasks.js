@@ -139,8 +139,8 @@ export default (app) => {
         reply.redirect('/tasks');
       } catch ({ data }) {
         request.flash('error', i18next.t('flash.tasks.update.error'));
-        task.$set({ 
-          ...dataTask, 
+        task.$set({
+          ...dataTask,
           labels: [...labelIds].map((labelId) => ({ id: parseInt(labelId, 10) })),
         });
         const [executors, statuses, labels] = await Promise.all([
