@@ -1,5 +1,5 @@
 import welcome from './welcome.js';
-import users from './users.js';
+import users from './users/routes.js';
 import session from './session.js';
 import statuses from './statuses.js';
 import tasks from './tasks.js';
