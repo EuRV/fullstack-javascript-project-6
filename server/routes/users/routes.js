@@ -1,25 +1,26 @@
 import i18next from 'i18next';
+import { ROUTES } from './config.js';
 
 export default (app) => {
   const objectionModels = app.objection.models;
 
   app
-    .get('/users', async (request, reply) => {
+    .get(ROUTES.INDEX, async (request, reply) => {
       const users = await objectionModels.user.query().modify('getPublicDate');
       reply.render('users/index', { users });
       return reply;
     })
-    .get('/users/new', (request, reply) => {
+    .get(ROUTES.NEW, (request, reply) => {
       const user = new objectionModels.user();
       reply.render('users/new', { user });
     })
-    .get('/users/:id/edit', { preValidation: app.authenticate, preHandler: app.requireCurrentUser }, async (request, reply) => {
+    .get(ROUTES.EDIT, { preValidation: app.authenticate, preHandler: app.requireCurrentUser }, async (request, reply) => {
       const { id } = request.params;
       const user = await objectionModels.user.query().findById(id);
       reply.render('users/edit', { user });
       return reply;
     })
-    .post('/users', async (request, reply) => {
+    .post(ROUTES.CREATE, async (request, reply) => {
       try {
         await objectionModels.user.query().insert(request.body.data);
         request.flash('info', i18next.t('flash.users.create.success'));
@@ -31,7 +32,7 @@ export default (app) => {
 
       return reply;
     })
-    .patch('/users/:id', async (request, reply) => {
+    .patch(ROUTES.UPDATE, async (request, reply) => {
       const { id } = request.params;
       const user = await objectionModels.user.query().findOne({ id });
       try {
@@ -44,7 +45,7 @@ export default (app) => {
       }
       return reply;
     })
-    .delete('/users/:id', { preValidation: app.authenticate, preHandler: app.requireCurrentUser }, async (request, reply) => {
+    .delete(ROUTES.DELETE, { preValidation: app.authenticate, preHandler: app.requireCurrentUser }, async (request, reply) => {
       const { id } = request.params;
       const user = await objectionModels.user.query().findById(id);
 
