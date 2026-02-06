@@ -1,15 +1,13 @@
 import i18next from 'i18next';
+import { UserHandler } from './handlers.js'
 import { ROUTES, VIEWS } from './config.js';
 
 export default (app) => {
+  const hadler = UserHandler(app);
   const objectionModels = app.objection.models;
 
   app
-    .get(ROUTES.INDEX, async (request, reply) => {
-      const users = await objectionModels.user.query().modify('getPublicDate');
-      reply.render(VIEWS.INDEX, { users });
-      return reply;
-    })
+    .get(ROUTES.INDEX, hadler.index)
     .get(ROUTES.NEW, (request, reply) => {
       const user = new objectionModels.user();
       reply.render(VIEWS.NEW, { user });
