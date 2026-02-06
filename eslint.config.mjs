@@ -30,7 +30,6 @@ export default [
       },
     },
     plugins: {
-      import: pluginImport,
       '@stylistic': stylistic,
     },
     rules: {
@@ -60,8 +59,8 @@ export default [
         ]
       }],
       'import/extensions': ['error', 'ignorePackages', {
-        'js': 'never',
-        'mjs': 'never'
+        'js': 'always',
+        'mjs': 'always',
       }],
     },
     settings: {
