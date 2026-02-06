@@ -114,7 +114,7 @@ const registerPlugins = async (app) => {
   });
 };
 
-export default async (app) => {
+export default async (app, opts) => {
   if (process.env.NODE_ENV !== 'test' && process.env.ROLLBAR_ACCESS_TOKEN) {
     const rollbar = new Rollbar({
       accessToken: process.env.ROLLBAR_ACCESS_TOKEN,
