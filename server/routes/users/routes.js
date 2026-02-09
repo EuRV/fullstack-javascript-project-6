@@ -9,26 +9,15 @@ export default (app) => {
   app
     .get(ROUTES.INDEX, handler.index)
     .get(ROUTES.NEW, handler.newUser)
-    .get(ROUTES.EDIT, { preValidation: app.authenticate, preHandler: app.requireCurrentUser }, async (request, reply) => {
-      const { id } = request.params;
-      const user = await objectionModels.user.query().findById(id);
-      reply.render(VIEWS.EDIT, { user });
-      return reply;
-    })
+    .get(ROUTES.EDIT, {
+      preValidation: app.authenticate,
+      preHandler: app.requireCurrentUser,
+    }, handler.editUser)
     .post(ROUTES.CREATE, handler.createUser)
-    .patch(ROUTES.UPDATE, async (request, reply) => {
-      const { id } = request.params;
-      const user = await objectionModels.user.query().findOne({ id });
-      try {
-        await user.$query().patch(request.body.data);
-        request.flash('info', i18next.t('flash.users.update.success'));
-        reply.redirect(ROUTES.INDEX);
-      } catch ({ data }) {
-        request.flash('error', i18next.t('flash.users.update.error'));
-        reply.render(VIEWS.EDIT, { user, errors: data });
-      }
-      return reply;
-    })
+    .patch(ROUTES.UPDATE, {
+      preValidation: app.authenticate,
+      preHandler: app.requireCurrentUser,
+    }, handler.updateUser)
     .delete(ROUTES.DELETE, { preValidation: app.authenticate, preHandler: app.requireCurrentUser }, async (request, reply) => {
       const { id } = request.params;
       const user = await objectionModels.user.query().findById(id);
