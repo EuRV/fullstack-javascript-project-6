@@ -3,33 +3,19 @@ import { UserHandler } from './handlers.js'
 import { ROUTES, VIEWS } from './config.js';
 
 export default (app) => {
-  const hadler = UserHandler(app);
+  const handler = UserHandler(app);
   const objectionModels = app.objection.models;
 
   app
-    .get(ROUTES.INDEX, hadler.index)
-    .get(ROUTES.NEW, (request, reply) => {
-      const user = new objectionModels.user();
-      reply.render(VIEWS.NEW, { user });
-    })
+    .get(ROUTES.INDEX, handler.index)
+    .get(ROUTES.NEW, handler.newUser)
     .get(ROUTES.EDIT, { preValidation: app.authenticate, preHandler: app.requireCurrentUser }, async (request, reply) => {
       const { id } = request.params;
       const user = await objectionModels.user.query().findById(id);
       reply.render(VIEWS.EDIT, { user });
       return reply;
     })
-    .post(ROUTES.CREATE, async (request, reply) => {
-      try {
-        await objectionModels.user.query().insert(request.body.data);
-        request.flash('info', i18next.t('flash.users.create.success'));
-        reply.redirect(ROUTES.HOME);
-      } catch ({ data }) {
-        request.flash('error', i18next.t('flash.users.create.error'));
-        reply.render(VIEWS.NEW, { user: request.body.data, errors: data });
-      }
-
-      return reply;
-    })
+    .post(ROUTES.CREATE, handler.createUser)
     .patch(ROUTES.UPDATE, async (request, reply) => {
       const { id } = request.params;
       const user = await objectionModels.user.query().findOne({ id });
