@@ -10,11 +10,28 @@ export const UserService = (app) => {
     return await UserModel.query().modify('getPublicDate');
   };
 
+  const findById = async (id, trx = null) => {
+    return await UserModel.query(trx).findById(id);
+  };
+
   const create = async (data) => {
     return withTransaction(knex, async (trx) => {
       return await UserModel.query(trx).insert(data);
     });
   };
 
-  return { createUserModel, findAll, create };
+  const update = async (id, data) => {
+    return withTransaction(knex, async (trx) => {
+      const user = await findById(id, trx);
+      await user.$query(trx).patch(data);
+    });
+  };
+
+  return {
+    createUserModel,
+    findAll,
+    findById,
+    create,
+    update,
+  };
 };
