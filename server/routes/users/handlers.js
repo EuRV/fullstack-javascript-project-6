@@ -28,6 +28,13 @@ export const UserHandler = (app) => {
     return reply;
   };
 
+  const editUser = async (request, reply) => {
+    const { id } = request.params;
+    const user = await service.findById(id);
+    reply.render(VIEWS.EDIT, { user });
+    return reply;
+  };
+
   const createUser = async (request, reply) => {
     const { data: user } = request.body;
 
@@ -42,5 +49,27 @@ export const UserHandler = (app) => {
     }
   };
 
-  return { index, newUser, createUser };
+  const updateUser = async (request, reply) => {
+    const { id } = request.params;
+    const { data: user } = request.body;
+
+    try {
+      await service.update(id, user);
+      request.flash(FLASH_TYPES.INFO, i18next.t(FLASH_MESSAGES.UPDATE_SUCCESS));
+      reply.redirect(ROUTES.INDEX);
+    } catch (error) {
+      const errors = error.data || {};
+      request.flash(FLASH_TYPES.ERROR, i18next.t(FLASH_MESSAGES.UPDATE_ERROR));
+      reply.render(VIEWS.EDIT, { user, errors });
+    }
+    return reply;
+  };
+
+  return {
+    index,
+    newUser,
+    createUser,
+    editUser,
+    updateUser,
+  };
 };
