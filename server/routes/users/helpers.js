@@ -6,3 +6,16 @@ export const handleError = (request, reply, errorKey, redirectTo) => {
   
   return reply.redirect(redirectTo);
 };
+
+export const withTransaction = async (knex, callback) => {
+  const trx = await knex.transaction();
+  
+  try {
+    const result = await callback(trx);
+    await trx.commit();
+    return result;
+  } catch (error) {
+    await trx.rollback();
+    throw error;
+  }
+};
