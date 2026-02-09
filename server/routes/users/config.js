@@ -15,6 +15,7 @@ export const VIEWS = {
 };
 
 export const FLASH_TYPES = {
+  INFO: 'info',
   SUCCESS: 'success',
   ERROR: 'error',
 };
