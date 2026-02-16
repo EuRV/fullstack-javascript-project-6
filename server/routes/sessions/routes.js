@@ -1,12 +1,13 @@
 import i18next from 'i18next';
+import { ROUTES, VIEWS, FLASH_TYPES, FLASH_MESSAGES } from './config.js';
 
 export default (app) => {
   app
-    .get('/session/new', (request, reply) => {
+    .get(ROUTES.NEW, (request, reply) => {
       const signInForm = {};
-      reply.render('session/new', { signInForm });
+      reply.render(VIEWS.NEW, { signInForm });
     })
-    .post('/session', app.fp.authenticate('form', async (request, reply, err, user) => {
+    .post(ROUTES.CREATE, app.fp.authenticate('form', async (request, reply, err, user) => {
       if (err) {
         return app.httpErrors.internalServerError(err);
       }
@@ -17,17 +18,17 @@ export default (app) => {
             message: 'Неверная почта или пароль',
           }],
         };
-        reply.render('session/new', { signInForm, errors });
+        reply.render(VIEWS.NEW, { signInForm, errors });
         return reply;
       }
       await request.logIn(user);
-      request.flash('success', i18next.t('flash.session.create.success'));
-      reply.redirect('/');
+      request.flash(FLASH_TYPES.SUCCESS, i18next.t(FLASH_MESSAGES.CREATE_SUCCESS));
+      reply.redirect(ROUTES.HOME);
       return reply;
     }))
-    .delete('/session', (request, reply) => {
+    .delete(ROUTES.DELETE, (request, reply) => {
       request.logOut();
-      request.flash('info', i18next.t('flash.session.delete.success'));
-      reply.redirect('/');
+      request.flash(FLASH_TYPES.INFO, i18next.t(FLASH_MESSAGES.DELETE_SUCCESS));
+      reply.redirect(ROUTES.HOME);
     });
 };
