@@ -98,13 +98,12 @@ const registerPlugins = async (app) => {
     },
   )(...args));
 
-  await app.decorate('requireCurrentUser', (req, reply, done) => {
+  await app.decorate('requireCurrentUser', async (req, reply) => {
     if (req.user.id !== Number(req.params.id)) {
       req.flash('error', i18next.t('flash.notCurrentUser'));
       reply.redirect('/users');
-      return reply;
+      throw new Error('Not current user');      
     }
-    return done();
   });
 
   await app.register(fastifyMethodOverride);
