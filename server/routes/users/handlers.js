@@ -65,11 +65,27 @@ export const UserHandler = (app) => {
     return reply;
   };
 
+  const deleteUser = async (request, reply) => {
+    const { id } = request.params;
+
+    try {
+      await service.remove(id);
+      request.logOut();
+      request.flash(FLASH_TYPES.INFO, i18next.t(FLASH_MESSAGES.DELETE_SUCCESS));
+      reply.redirect(ROUTES.INDEX);
+    } catch (error) {
+      request.flash(FLASH_TYPES.ERROR, i18next.t(FLASH_MESSAGES.DELETE_ERROR));
+      reply.redirect(ROUTES.INDEX);
+    }
+    return reply;
+  };
+
   return {
     index,
     newUser,
     createUser,
     editUser,
     updateUser,
+    deleteUser,
   };
 };
