@@ -27,11 +27,19 @@ export const UserService = (app) => {
     });
   };
 
+  const remove = async (id) => {
+    return withTransaction(knex, async (trx) => {
+      const user = await findById(id, trx);
+      await user.$query(trx).delete();
+    });
+  };
+
   return {
     createUserModel,
     findAll,
     findById,
     create,
     update,
+    remove,
   };
 };
