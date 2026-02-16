@@ -1,6 +1,6 @@
 import welcome from './welcome.js';
 import users from './users/routes.js';
-import session from './sessions/routes.js';
+import sessions from './sessions/routes.js';
 import statuses from './statuses.js';
 import tasks from './tasks.js';
 import labels from './labels.js';
@@ -8,7 +8,7 @@ import labels from './labels.js';
 const controllers = [
   welcome,
   users,
-  session,
+  sessions,
   statuses,
   tasks,
   labels,
