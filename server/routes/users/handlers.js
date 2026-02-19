@@ -60,7 +60,7 @@ export const UserHandler = (app) => {
     } catch (error) {
       const errors = error.data || {};
       request.flash(FLASH_TYPES.ERROR, i18next.t(FLASH_MESSAGES.UPDATE_ERROR));
-      reply.render(VIEWS.EDIT, { user, errors });
+      reply.render(VIEWS.EDIT, { user: { ...user, id }, errors });
     }
     return reply;
   };
