@@ -53,7 +53,7 @@ const setUpStaticAssets = (app) => {
   });
 };
 
-const setupLocalization = async () => {
+const setupLocalization = async (app) => {
   await i18next
     .init({
       lng: 'ru',
@@ -62,6 +62,8 @@ const setupLocalization = async () => {
         ru,
       },
     });
+
+  app.decorate('i18next', i18next);
 };
 
 const addHooks = (app) => {
@@ -87,9 +89,11 @@ const registerPlugins = async (app) => {
   );
   fastifyPassport.registerUserSerializer((user) => Promise.resolve(user));
   fastifyPassport.use(new FormStrategy('form', app));
+
   await app.register(fastifyPassport.initialize());
   await app.register(fastifyPassport.secureSession());
   await app.decorate('fp', fastifyPassport);
+  
   app.decorate('authenticate', (...args) => fastifyPassport.authenticate(
     'form',
     {
@@ -125,7 +129,7 @@ export default async (app, opts) => {
   }
 
   await registerPlugins(app);
-  await setupLocalization();
+  await setupLocalization(app);
   setUpViews(app);
   setUpStaticAssets(app);
   addRoutes(app);
