@@ -1,5 +1,4 @@
 import { ROUTES, VIEWS, FLASH_TYPES, FLASH_MESSAGES } from './config.js';
-import i18next from 'i18next';
 
 export default (app) => {
   const showLoginForm = (request, reply) => {
@@ -22,14 +21,14 @@ export default (app) => {
       return reply;
     }
     await request.logIn(user);
-    request.flash(FLASH_TYPES.SUCCESS, i18next.t(FLASH_MESSAGES.CREATE_SUCCESS));
+    request.flash(FLASH_TYPES.SUCCESS, app.i18next.t(FLASH_MESSAGES.CREATE_SUCCESS));
     reply.redirect(ROUTES.HOME);
     return reply;
   };
 
   const deleteSession = (request, reply) => {
     request.logOut();
-    request.flash(FLASH_TYPES.INFO, i18next.t(FLASH_MESSAGES.DELETE_SUCCESS));
+    request.flash(FLASH_TYPES.INFO, app.i18next.t(FLASH_MESSAGES.DELETE_SUCCESS));
     reply.redirect(ROUTES.HOME);
   };
 
